@@ -4,6 +4,8 @@ import { DataService } from './data.service';
 
 interface MartketData {
   date?: Date,
+  allHigh: number,
+  allLow: number,
   high: number,
   low: number,
   open: number,
@@ -15,7 +17,9 @@ interface MartketData {
   trades: [],
   status: number,
   isFirstTrade: boolean,
-  comments: string[]
+  comments: string[],
+  previuosOrder?: MartketData
+  slOrderPlaced?: false;
 }
 enum Val {
   open = 1,
@@ -38,7 +42,7 @@ enum Order {
 export class AppComponent implements OnInit {
   title = 'Kanna-statergyAngular';
   marketObject: MartketData = {
-    high: 0, low: 0, open: 0, UB: 0, LB: 0, target: 0, stopLoss: 0, priceToTrade: 0, trades: [], status: Order.nill, isFirstTrade: true, comments: []
+    allHigh:0,allLow:0, high: 0, low: 0, open: 0, UB: 0, LB: 0, target: 0, stopLoss: 0, priceToTrade: 0, trades: [], status: Order.nill, isFirstTrade: true, comments: []
   };
   trades = [];
   constructor(private datas: DataService) { }
@@ -51,9 +55,34 @@ export class AppComponent implements OnInit {
         this.marketObject.date = data[0]
         this.marketObject.open = data[Val.open];
         this.marketObject.high = data[Val.high];
+        this.marketObject.allHigh = data[Val.high];
         this.marketObject.low = data[Val.low];
+        this.marketObject.allLow = data[Val.low];
         this.setUpperBandAndLowerBand(data)
         return;
+      }
+      let endTime = `${new Date(data[0]).getHours()}${new Date(data[0]).getMinutes()}`;
+      if(endTime == '1515'){
+          let closePrice = data[Val.open];
+          if(this.marketObject.status == Order.liveBuy){
+            this.marketObject.comments.push(`TimeEnd Sell exe at open price ${closePrice}`)
+            this.marketObject.status = Order.completed;
+            this.marketObject.target = 0;
+            this.marketObject.stopLoss = 0;
+            this.marketObject.priceToTrade = 0;
+          }else if(this.marketObject.status == Order.liveSell){
+            this.marketObject.comments.push(`TimeEnd Buy exe at open price ${closePrice}`)
+            this.marketObject.status = Order.completed;
+            this.marketObject.target = 0;
+            this.marketObject.stopLoss = 0;
+            this.marketObject.priceToTrade = 0;
+          }else{
+            this.marketObject.comments.push(`Cancell all the pending orders and close the trade`)
+            this.marketObject.status = Order.completed;
+            this.marketObject.target = 0;
+            this.marketObject.stopLoss = 0;
+            this.marketObject.priceToTrade = 0;
+          }
       }
 
       // if(this.marketObject.orderOpen){
@@ -78,10 +107,12 @@ export class AppComponent implements OnInit {
 
       switch (this.marketObject.status) {
         case 1: {
+          //No Trade
           this.checkToPlaceOrder(data);
           break;
         }
         case 2: {
+          //Buy placed
           if (this.marketObject.target == 0) {
             //Normal Buy goes here
 
@@ -91,6 +122,7 @@ export class AppComponent implements OnInit {
 
               if (data[Val.high] > this.marketObject.high) {
                 this.marketObject.high = data[Val.high];
+                this.marketObject.allHigh = data[Val.high]
               }
               this.marketObject.status = Order.liveBuy;
               this.marketObject.isFirstTrade = false;
@@ -117,6 +149,8 @@ export class AppComponent implements OnInit {
               this.marketObject.comments.push(`Buy exe at ${this.marketObject.priceToTrade} ,Time:${new Date(data[0]).getHours()}:${new Date(data[0]).getMinutes()}`)
               this.marketObject.status = Order.liveBuy;
               this.marketObject.isFirstTrade = false;
+              if(data[Val.high] >= this.marketObject.high) this.marketObject.allHigh = data[Val.high];
+
               if (data[Val.high] >= this.marketObject.target) {
                 this.marketObject.high = data[Val.high];
                 this.marketObject.comments.push(`TGT Reached , Time:${new Date(data[0]).getHours()}:${new Date(data[0]).getMinutes()}`)
@@ -141,6 +175,7 @@ export class AppComponent implements OnInit {
           break;
         }
         case 3: {
+          /// Sell placed
           if (this.marketObject.target == 0) {
             //Normal Buy goes here
             //44  45
@@ -152,6 +187,7 @@ export class AppComponent implements OnInit {
                 this.marketObject.comments.push(`New Low  ${data[Val.low]}, Time:${new Date(data[0]).getHours()}:${new Date(data[0]).getMinutes()}`)
 
                 this.marketObject.low = data[Val.low];
+                this.marketObject.allLow = data[Val.low]
               }
               this.marketObject.status = Order.liveSell;
               this.marketObject.isFirstTrade = false;
@@ -173,12 +209,18 @@ export class AppComponent implements OnInit {
 
 
           } else {
+            debugger
             //TGT BUY logic goes here
             if (data[Val.low] <= this.marketObject.priceToTrade) {
               this.marketObject.comments.push(`Sell exe at ${this.marketObject.priceToTrade} , Time:${new Date(data[0]).getHours()}:${new Date(data[0]).getMinutes()}`)
               this.marketObject.status = Order.liveSell;
               this.marketObject.isFirstTrade = false;
+
+              if(data[Val.low] <= this.marketObject.low){
+                this.marketObject.allLow = data[Val.low];
+              }
               if (data[Val.low] <= this.marketObject.target) {
+                if(data[Val.low] <= this.marketObject.low) 
                 this.marketObject.low = data[Val.low];
                 this.marketObject.comments.push(`TGT Reached, Time:${new Date(data[0]).getHours()}:${new Date(data[0]).getMinutes()}`)
                 this.checkToPlaceOrder(data);
@@ -196,12 +238,74 @@ export class AppComponent implements OnInit {
           break;
         }
         case 4: {
-          //normal order 
-          // update new UB and LB and check Track SL 
-          // SL May hit and repeat case 1 by reset high,low,UB,LB
-          //TGT Order
-          // TGT reached and trake new UB ,LB,High,LOw
-          // May reach SL and repeat case 1 
+          //Buy live
+          //Normal Trade
+          if (this.marketObject.target == 0) {
+            //New high reverse UB and LB
+            if(data[Val.high] > this.marketObject.high){
+              this.marketObject.high = data[Val.high];
+              this.marketObject.allHigh = data[Val.high]
+              this.setUpperBandAndLowerBand(data)
+            }
+            //Reached LB place Sell Order
+            if(data[Val.low] < this.marketObject.LB){
+              //Cancel Buy order 
+              this.checkToPlaceOrder(data,true);
+              //Repeat case 1
+            }
+          } else {
+            //TGT Trade
+            //Target reached update UB and LB
+            if(data[Val.high] >= this.marketObject.target){
+              this.marketObject.high = data[Val.high];
+              this.setUpperBandAndLowerBand(data);
+              this.marketObject.target = 0;
+              this.marketObject.stopLoss = 0;
+              this.marketObject.comments.push('Reached Target TGt order changed to normal order')
+            }
+            //Stoploss reached place Sell Order
+            if(data[Val.low] <= this.marketObject.stopLoss){
+              this.checkToPlaceOrder(data,true);
+            }
+          }
+
+
+          break
+        }
+        case 5: {
+          //Sell live
+          //Normal Trade
+          if (this.marketObject.target == 0) {
+            //New Low reverse UB and LB
+            if(data[Val.low] < this.marketObject.low){
+              this.marketObject.low = data[Val.low];
+              this.marketObject.allLow = data[Val.low]
+              this.setUpperBandAndLowerBand(data)
+            }
+            //Reached UB place BUY Order
+            if(data[Val.high] >= this.marketObject.UB){
+              //Cancel Buy order 
+              this.checkToPlaceOrder(data,true);
+              //Repeat case 1
+            }
+          } else {
+            //TGT Trade
+            //Target reached update UB and LB
+            //Stoploss reached place buy Order
+            //TGT Trade
+            //Target reached update UB and LB
+            if(data[Val.low] <= this.marketObject.target){
+              this.marketObject.low = data[Val.low];
+              this.setUpperBandAndLowerBand(data);
+              this.marketObject.target = 0;
+              this.marketObject.stopLoss = 0;
+              this.marketObject.comments.push('Reached Target TGt order changed to normal order')
+            }
+            //Stoploss reached place Sell Order
+            if(data[Val.high] >= this.marketObject.stopLoss){
+              this.checkToPlaceOrder(data,true);
+            }
+          }
           break
         }
       }
@@ -216,13 +320,21 @@ export class AppComponent implements OnInit {
 
 
   //Check to place Order
-  checkToPlaceOrder(data: any) {
+  checkToPlaceOrder(data: any,slOrder?: boolean) {
     //Initial order excution
     if (data[Val.high] >= this.marketObject.high) {
       this.marketObject.high = data[Val.high];
+      this.marketObject.allHigh = data[Val.high];
       this.setUpperBandAndLowerBand(data)
     }
     if (data[Val.high] >= this.marketObject.UB) {
+      //Handle SL Order here
+      if(slOrder){
+        this.marketObject.comments.push(`UB Buy order placed at ${data[Val.high] + 1} Time:${new Date(data[0]).getHours()}:${new Date(data[0]).getMinutes()}` )
+        this.marketObject.status = Order.completed;
+        this.setPreviousOrder();
+      }
+      ////////////
       if (data[Val.high] < this.marketObject.high) {
         this.setTargetFunction('BUY')
       }
@@ -237,31 +349,48 @@ export class AppComponent implements OnInit {
     }
     if (data[Val.low] <= this.marketObject.low) {
       this.marketObject.low = data[Val.low];
+      this.marketObject.allLow = data[Val.low];
       this.setUpperBandAndLowerBand(data)
     }
     if (data[Val.low] <= this.marketObject.LB) {
+      //Handle SL Order here
+      if(slOrder){
+        this.marketObject.comments.push(`LB Sell order placed at ${data[Val.low] - 1} Time:${new Date(data[0]).getHours()}:${new Date(data[0]).getMinutes()}` )
+
+        this.marketObject.status = Order.completed;
+        this.setPreviousOrder();
+      }
+      ////////////
       if (data[Val.low] > this.marketObject.low) {
         this.setTargetFunction('SELL')
       }
-      if (this.marketObject.target) this.marketObject.comments.push(`Crossed LB Sell Order placed at ${data[Val.high] + 1} Target at ${this.marketObject.target}, Stoploss:${this.marketObject.stopLoss} Time:${new Date(data[0]).getHours()}:${new Date(data[0]).getMinutes()}`);
 
-      else this.marketObject.comments.push(`Crossed LB Sell Order placed at ${data[Val.high] + 1}, Time:${new Date(data[0]).getHours()}:${new Date(data[0]).getMinutes()}`)
+     
+      if (this.marketObject.target) this.marketObject.comments.push(`Crossed LB Sell Order placed at ${data[Val.low] - 1} Target at ${this.marketObject.target}, Stoploss:${this.marketObject.stopLoss} Time:${new Date(data[0]).getHours()}:${new Date(data[0]).getMinutes()}`);
+
+      else this.marketObject.comments.push(`Crossed LB Sell Order placed at ${data[Val.low] - 1}, Time:${new Date(data[0]).getHours()}:${new Date(data[0]).getMinutes()}`)
+
       this.marketObject.priceToTrade = this.customParseFloat(data[Val.low] - 1);
       this.marketObject.status = Order.pendingSell
       console.log(`Crossed LB SELL Order placed at ${data[Val.low] - 1}`);
       return
     }
   }
+
+  //Set PreviousOrder Status
+  setPreviousOrder(){
+    this.marketObject.previuosOrder = {...this.marketObject};
+  }
   //set Target function
   setTargetFunction(type: string) {
     if (type == "BUY") {
-      let dif: number = this.marketObject.open - this.marketObject.low;
+      let dif: number = this.marketObject.open - this.marketObject.allLow;
       this.marketObject.target = this.marketObject.open + dif;
-      this.marketObject.stopLoss = this.marketObject.low;
+      this.marketObject.stopLoss = this.marketObject.allLow;
     } else if (type == "SELL") {
-      let dif: number = this.marketObject.high - this.marketObject.open;
+      let dif: number = this.marketObject.allHigh - this.marketObject.open;
       this.marketObject.target = this.marketObject.open - dif;
-      this.marketObject.stopLoss = this.marketObject.high;
+      this.marketObject.stopLoss = this.marketObject.allHigh;
     }
 
   }
