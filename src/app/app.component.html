@@ -2,73 +2,73 @@
   <div class="row">
     <div class="col-2">
       <h2>Date</h2>
-      <label>{{marketObject.date | date}}</label>
+      <label>{{MB.date | date}}</label>
     </div>
     <div class="col-2">
       <h2>Open</h2>
-      <label>{{marketObject.open}}</label>
+      <label>{{MB.open}}</label>
     </div>
     <div class="col-2">
       <h2>High</h2>
-      <label>{{marketObject.high}}</label>
+      <label>{{MB.high}}</label>
     </div>
     <div class="col-2">
       <h2>Low</h2>
-      <label>{{marketObject.low}}</label>
+      <label>{{MB.low}}</label>
     </div>
     <div class="col-2">
       <h2>UB</h2>
-      <label>{{marketObject.UB}}</label>
+      <label>{{MB.UB}}</label>
     </div>
     <div class="col-2">
       <h2>LB</h2>
-      <label>{{marketObject.LB}}</label>
+      <label>{{MB.LB}}</label>
     </div>
     <div class="col-2">
       <h2>Status</h2>
-      <label>{{getStatus(marketObject.status)}}</label>
+      <label>{{getStatus(MB.status)}}</label>
     </div>
     <div class="col-2">
       <h2>Target</h2>
-      <label>{{marketObject.target}}</label>
+      <label>{{MB.target}}</label>
     </div>
     <div class="col-2">
       <h2>Stoploss</h2>
-      <label>{{marketObject.stopLoss}}</label>
+      <label>{{MB.stopLoss}}</label>
     </div>
     <div class="col-2">
       <h2>Trade Price</h2>
-      <label>{{marketObject.priceToTrade}}</label>
+      <label>{{MB.priceToTrade}}</label>
     </div>
     <div class="col-2">
       <h2>Is first Trade</h2>
-      <label>{{marketObject.isFirstTrade}}</label>
+      <label>{{MB.isFirstTrade}}</label>
     </div>
     <div class="col-2">
       <h2>All time high</h2>
-      <label>{{marketObject.allHigh}}</label>
+      <label>{{MB.allHigh}}</label>
     </div>
     <div class="col-2">
       <h2>All time low</h2>
-      <label>{{marketObject.allLow}}</label>
+      <label>{{MB.allLow}}</label>
     </div>
     <div class="col-2">
       <h2>SL Order status</h2>
-      <label>{{getStatus(marketObject.slOrderStatus)}}</label>
+      <label>{{getStatus(MB.slOrderStatus)}}</label>
     </div>
     <div class="col-2">
       <h2>SL order placed</h2>
-      <label>{{marketObject.slOrderPlaced}}</label>
+      <label>{{MB.slOrderPlaced}}</label>
     </div>
     <div class="col-2">
       <h2>SL order price</h2>
-      <label>{{marketObject.slPriceToTrade}}</label>
+      <label>{{MB.slPriceToTrade}}</label>
     </div>
   </div>
   <div class="row">
     <div class="col-12">
       <ul class="list-group">
-        <li class="list-group-item" *ngFor="let comment of marketObject.comments">{{comment}}</li>
+        <li class="list-group-item" *ngFor="let comment of MB.comments">{{comment}}</li>
 
       </ul>
     </div>
