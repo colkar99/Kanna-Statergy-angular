@@ -153,15 +153,10 @@ export class AppComponent implements OnInit {
         }
         case 3: {
           // Target Buy Order placed
-          //High >= Target 
-          if(data[Val.high] >= this.MB.target){
-              this.MB.comments.push(`TGT Reached New High(${data[Val.high]}) at ${this.getTimeForComment(data)}`)
-              this.MB.high = data[Val.high];
-              this.MB.allHigh = data[Val.high]; 
-              this.setUpperBandAndLowerBand(data);
-              this.MB.comments.push(`Convert To normal Buy order ${this.MB.priceToTrade} at ${this.getTimeForComment(data)}`)
-              this.MB.target = 0;
-              this.MB.stopLoss = 0;
+          //High >= priceTo Trade 
+          if(data[Val.high] >= this.MB.priceToTrade){
+              this.MB.status = Order.liveBuyTarget;
+              this.MB.comments.push(`TGT Buy Order Exec ${data[Val.high]} TGT:${this.MB.target} SL:${this.MB.stopLoss}  at ${this.getTimeForComment(data)}`)
               return
             //update bands and convert to normal order
             //new high >  old high
@@ -236,7 +231,39 @@ export class AppComponent implements OnInit {
           break
         }
         case 5: {
-          //Sell live
+          //TGT Sell Placed
+          //low <= priceTo Trade 
+          if(data[Val.low] <= this.MB.priceToTrade){
+            this.MB.status = Order.liveSellTarget;
+            this.MB.comments.push(`TGT Sell Order Exec ${data[Val.low] - 1} TGT:${this.MB.target} SL:${this.MB.stopLoss}  at ${this.getTimeForComment(data)}`)
+            return
+          //update bands and convert to normal order
+          //new high >  old high
+        }
+        // low <= stoploss
+        if(data[Val.high] >= this.MB.stopLoss){
+          //place BUY Sell Order
+          this.MB.slPriceToTrade = data[Val.high] + 1;
+          if(data[Val.high] >= this.MB.high){
+            //Normal Order
+            this.MB.comments.push(`New High(${data[Val.high]}) at ${this.getTimeForComment(data)}`)
+            this.setUpperBandAndLowerBand(data);
+            this.MB.status = Order.pendingBUYNomal
+            this.MB.comments.push(`SL hit Normall Buy order Placed at ${data[Val.high] + 1} at ${this.getTimeForComment(data)}`)
+          }else{
+            this.MB.status = Order.pendingBUYTarget
+            this.setTargetFunction('BUY')
+            this.MB.comments.push(`SL hit TGT BUY order Placed at ${data[Val.high] + 1} TGT${this.MB.target} sl:${this.MB.stopLoss} at ${this.getTimeForComment(data)}`)
+            //Target Order
+          }
+          //check new Low   
+
+        }
+          break
+        }
+        case 6:{
+          // live Buy Normal
+          
           break
         }
       }
@@ -391,3 +418,10 @@ export class AppComponent implements OnInit {
     return `Time: ${new Date(data[0]).getHours()}:${new Date(data[0]).getMinutes()}`
   }
 }
+ // this.MB.comments.push(`TGT Reached New High(${data[Val.high]}) at ${this.getTimeForComment(data)}`)
+              // this.MB.high = data[Val.high];
+              // this.MB.allHigh = data[Val.high]; 
+              // this.setUpperBandAndLowerBand(data);
+              // this.MB.comments.push(`Convert To normal Buy order ${this.MB.priceToTrade} at ${this.getTimeForComment(data)}`)
+              // this.MB.target = 0;
+              // this.MB.stopLoss = 0;
