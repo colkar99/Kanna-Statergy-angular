@@ -52,6 +52,18 @@
       <h2>All time low</h2>
       <label>{{marketObject.allLow}}</label>
     </div>
+    <div class="col-2">
+      <h2>SL Order status</h2>
+      <label>{{getStatus(marketObject.slOrderStatus)}}</label>
+    </div>
+    <div class="col-2">
+      <h2>SL order placed</h2>
+      <label>{{marketObject.slOrderPlaced}}</label>
+    </div>
+    <div class="col-2">
+      <h2>SL order price</h2>
+      <label>{{marketObject.slPriceToTrade}}</label>
+    </div>
   </div>
   <div class="row">
     <div class="col-12">
