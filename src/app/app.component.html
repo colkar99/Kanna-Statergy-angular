@@ -1,4 +1,11 @@
 <div class="container-fluid">
+  <div class="row"><H2>Points Earned</H2>
+    <div class="col-12">
+      <h3>
+        {{customParseFloat(totalPointsEarned)}} * 25 ={{customParseFloat(totalPointsEarned * 25)}}
+      </h3>
+    </div>
+  </div>
   <div class="row">
     <div class="col-2">
       <h2>Date</h2>
@@ -68,8 +75,18 @@
   <div class="row">
     <div class="col-12">
       <ul class="list-group">
-        <li class="list-group-item" *ngFor="let comment of MB.comments">{{comment}}</li>
 
+        <li class="list-group-item" *ngFor="let comment of MB.comments"
+          [ngClass]="{'my_class': getExecPresent(comment) === true}">
+          <div *ngIf="getExecPresent(comment)" class="alert alert-success" role="alert">
+            {{comment}}
+
+          </div>
+          <div *ngIf="!getExecPresent(comment)" class="alert alert-light" role="alert">
+            {{comment}}
+
+          </div>
+        </li>
       </ul>
     </div>
   </div>
