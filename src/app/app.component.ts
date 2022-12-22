@@ -533,6 +533,7 @@ export class AppComponent implements OnInit {
             this.MB.allHigh = data[Val.high];
             //set UB LB
             this.setUpperBandAndLowerBand(data);
+            return
           }
 
           //low < SL Trade Price
@@ -575,6 +576,7 @@ export class AppComponent implements OnInit {
             this.MB.high = this.MB.target;
             this.setUpperBandAndLowerBand(data)
             //Update UB LB
+            return
           }
 
           // low <= slTradePrice //Negative
@@ -616,6 +618,7 @@ export class AppComponent implements OnInit {
             this.MB.allHigh = data[Val.high];
             //set UB LB
             this.setUpperBandAndLowerBand(data);
+            return
           }
 
 
@@ -656,6 +659,7 @@ export class AppComponent implements OnInit {
             this.MB.high = this.MB.target;
             this.setUpperBandAndLowerBand(data)
             //Update UB LB
+            return
           }
 
           if (data[Val.low] <= this.MB.slPriceToTrade) {
@@ -695,6 +699,7 @@ export class AppComponent implements OnInit {
             this.MB.allLow = data[Val.low];
             //set UB LB
             this.setUpperBandAndLowerBand(data);
+            return
           }
 
           //high >= SL Trade Price // negative
@@ -738,6 +743,7 @@ export class AppComponent implements OnInit {
             this.MB.low = this.MB.target;
             this.setUpperBandAndLowerBand(data)
             //Update UB LB
+            return
           }
 
           // high >= slTradePrice //Negative
@@ -778,6 +784,7 @@ export class AppComponent implements OnInit {
             this.MB.allLow = data[Val.low];
             //set UB LB
             this.setUpperBandAndLowerBand(data);
+            return
           }
 
 
@@ -818,6 +825,7 @@ export class AppComponent implements OnInit {
             this.MB.low = this.MB.target;
             this.setUpperBandAndLowerBand(data)
             //Update UB LB
+            return
           }
 
           if (data[Val.high] >= this.MB.slPriceToTrade) {
