@@ -1,93 +1,62 @@
 <div class="container-fluid">
-  <div class="row"><H2>Points Earned</H2>
-    <div class="col-12">
-      <h3>
-        {{customParseFloat(totalPointsEarned)}} * 25 ={{customParseFloat(totalPointsEarned * 25)}}
-      </h3>
-    </div>
-  </div>
+  <app-practice-comp ></app-practice-comp>
+  <!-- <app-testing-per-day></app-testing-per-day> -->
   <div class="row">
-    <div class="col-2">
-      <h2>Date</h2>
-      <label>{{MB.date | date}}</label>
-    </div>
-    <div class="col-2">
-      <h2>Open</h2>
-      <label>{{MB.open}}</label>
-    </div>
-    <div class="col-2">
-      <h2>High</h2>
-      <label>{{MB.high}}</label>
-    </div>
-    <div class="col-2">
-      <h2>Low</h2>
-      <label>{{MB.low}}</label>
-    </div>
-    <div class="col-2">
-      <h2>UB</h2>
-      <label>{{MB.UB}}</label>
-    </div>
-    <div class="col-2">
-      <h2>LB</h2>
-      <label>{{MB.LB}}</label>
-    </div>
-    <div class="col-2">
-      <h2>Status</h2>
-      <label>{{getStatus(MB.status)}}</label>
-    </div>
-    <div class="col-2">
-      <h2>Target</h2>
-      <label>{{MB.target}}</label>
-    </div>
-    <div class="col-2">
-      <h2>Stoploss</h2>
-      <label>{{MB.stopLoss}}</label>
-    </div>
-    <div class="col-2">
-      <h2>Trade Price</h2>
-      <label>{{MB.priceToTrade}}</label>
-    </div>
-    <div class="col-2">
-      <h2>Is first Trade</h2>
-      <label>{{MB.isFirstTrade}}</label>
-    </div>
-    <div class="col-2">
-      <h2>All time high</h2>
-      <label>{{MB.allHigh}}</label>
-    </div>
-    <div class="col-2">
-      <h2>All time low</h2>
-      <label>{{MB.allLow}}</label>
-    </div>
-    <div class="col-2">
-      <h2>SL Order status</h2>
-      <label>{{getStatus(MB.slOrderStatus)}}</label>
-    </div>
-    <div class="col-2">
-      <h2>SL order placed</h2>
-      <label>{{MB.slOrderPlaced}}</label>
-    </div>
-    <div class="col-2">
-      <h2>SL order price</h2>
-      <label>{{MB.slPriceToTrade}}</label>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12">
-      <ul class="list-group">
+    <div class="col-12" >
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Date</th>
+            <th scope="col">No Of Trades</th>
+            <th scope="col">Trade Cost</th>
+            <th scope="col">Points Earned</th>
+            <th scope="col">Size</th>
+            <th scope="col">Profit/Loss</th>
+            <th scope="col">Realised Profit</th>
+            <th scope="col">check</th>
 
-        <li class="list-group-item" *ngFor="let comment of MB.comments"
-          [ngClass]="{'my_class': getExecPresent(comment) === true}">
-          <div *ngIf="getExecPresent(comment)" class="alert alert-success" role="alert">
-            {{comment}}
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let result of resultData;let i = index">
+            <th scope="row">{{i + 1}}</th>
+            <td>{{result?.date | date}}</td>
+            <td>{{result?.noOfTrades}}</td>
+            <td>{{result?.tradeCost}}</td>
+            <td>{{result?.ProfitAndLoss}}</td>
+            <td>{{size}}</td>
+            <td >
+              <span *ngIf="customParseFloat(result.ProfitAndLoss * size) > 0" style="color: green;">
+                &#x20b9; {{customParseFloat(result.ProfitAndLoss * size)}}
+              </span>
+              <span *ngIf="customParseFloat(result.ProfitAndLoss * size) < 0" style="color: red;">
+                &#x20b9; {{customParseFloat(result.ProfitAndLoss * size)}}
+              </span>
+            </td>
+            <td >
+              <span *ngIf="customParseFloat((result.ProfitAndLoss * size) - result.tradeCost) > 0" style="color: green;">
+                &#x20b9; {{customParseFloat((result.ProfitAndLoss * size) - result.tradeCost)}}
+              </span>
+              <span *ngIf="customParseFloat((result.ProfitAndLoss * size) - result.tradeCost) < 0" style="color: red;">
+                &#x20b9; {{customParseFloat((result.ProfitAndLoss * size) - result.tradeCost)}}
+              </span>
+            </td>
+            <td>{{result.demo}}</td>
 
-          </div>
-          <div *ngIf="!getExecPresent(comment)" class="alert alert-light" role="alert">
-            {{comment}}
-
-          </div>
-        </li>
-      </ul>
+          </tr>
+          <tr>
+            <td>Total Trades:{{datas.totalTrades}} * 200 </td>
+            <td>Trade cost:{{datas.totalTrades * 200}}</td>
+            <td></td>
+            <td></td>
+            <td><h3>Total</h3></td>
+            <td><h3>{{customParseFloat(totalPoints * size)}}</h3></td>
+            <td><h3>Realized Profit </h3></td>
+            <td><h3>{{customParseFloat((totalPoints * size) - totalTradeCost)}}</h3></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
