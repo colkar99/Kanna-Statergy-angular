@@ -66,7 +66,8 @@ export class PracticeCompComponent implements OnInit {
   buySellDiff: number = 0 ;
   buySide: number[] = [6, 7, 10, 11, 12, 13]
   sellSide: number[] = [8, 9, 14, 15, 16, 17]
-  endTime: number = 1515;
+  endTime: string = '15:15:00+0530';
+  startTime: string = '09:15:00+0530';
   
   MB: MartketData = {
     allHigh: 0, allLow: 0, high: 0, low: 0, open: 0, UB: 0, LB: 0, target: 0, stopLoss: 0, priceToTrade: 0, trades: [], status: Order.nill, isFirstTrade: true, comments: [], slOrderStatus: 1, slOrderPlaced: false, slPriceToTrade: 0
@@ -101,10 +102,23 @@ export class PracticeCompComponent implements OnInit {
     this.totalPointsEarned = 0
     this.trades = [];
   }
-  mainFunction(datas:[]) {
+  mainFunction(datas:any[]) {
     this.resetData();
+
+        // this.resetData();
+        let start = datas[0][0].split('T');
+        start[1] = this.startTime
+        let end = datas[0][0].split('T');
+        end[1] = this.endTime
+    
+        start = new Date(start.join('T'))
+        end = new Date(end.join('T'))
+    
     datas.forEach((data, index) => {
-      if (index == 0) {
+
+      
+      if (new Date(data[0]).getTime() < start.getTime()) return;
+      if (new Date(data[0]).getTime() == start.getTime()) {
         this.MB.date = data[0]
         this.MB.open = data[Val.open];
         this.MB.high = data[Val.high];
@@ -114,8 +128,8 @@ export class PracticeCompComponent implements OnInit {
         this.setUpperBandAndLowerBand(data)
         return;
       }
-      let currentTime = `${new Date(data[0]).getHours()}${new Date(data[0]).getMinutes()}`;
-      if (parseInt(currentTime) == this.endTime) {
+
+      if (new Date(data[0]).getTime() == end.getTime()) {
         let closePrice = data[Val.open];
         if (this.buySide.includes(this.MB.status)) { // buy side open
           this.MB.comments.push(`TimeEnd Sell EXEC at open price ${closePrice}`);
@@ -138,10 +152,14 @@ export class PracticeCompComponent implements OnInit {
         return
       }
 
-      if (parseInt(currentTime) > this.endTime) {
+      if (new Date(data[0]).getTime() > end.getTime()) {
         this.resetData();
         return
       }
+
+
+
+    
 
       switch (this.MB.status) {
         case 1: {
