@@ -66,8 +66,8 @@ export class PracticeCompComponent implements OnInit {
   buySellDiff: number = 0 ;
   buySide: number[] = [6, 7, 10, 11, 12, 13]
   sellSide: number[] = [8, 9, 14, 15, 16, 17]
-  endTime: string = '15:15:00+0530';
   startTime: string = '09:15:00+0530';
+  endTime: string = '15:15:00+0530';
   
   MB: MartketData = {
     allHigh: 0, allLow: 0, high: 0, low: 0, open: 0, UB: 0, LB: 0, target: 0, stopLoss: 0, priceToTrade: 0, trades: [], status: Order.nill, isFirstTrade: true, comments: [], slOrderStatus: 1, slOrderPlaced: false, slPriceToTrade: 0
@@ -161,7 +161,7 @@ export class PracticeCompComponent implements OnInit {
 
     
 
-      switch (this.MB.status) {
+        switch (this.MB.status) {
         case 1: {
           //No Trade
           this.checkToPlaceOrder(data);
@@ -212,6 +212,18 @@ export class PracticeCompComponent implements OnInit {
               this.MB.allLow = data[Val.low];
               this.setUpperBandAndLowerBand(data);
             }
+            return
+          }
+
+          if (data[Val.low] <= this.MB.low) {
+            //Cancel normal buy order
+            this.MB.status = Order.nill;
+            this.MB.comments.push(`New Low(${data[Val.low]}) Cancel Normal buy order Band Revise at ${this.getTimeForComment(data)}`)
+            this.MB.low = data[Val.low];
+            this.MB.allLow = data[Val.low];
+            this.setUpperBandAndLowerBand(data);
+            //set new low
+            //set upper and lower band
           }
           //check  Low less than LB
           //cancel Buy Order
@@ -308,6 +320,15 @@ export class PracticeCompComponent implements OnInit {
               this.MB.allHigh = data[Val.high];
               this.setUpperBandAndLowerBand(data);
             }
+            return
+          }
+
+          if (data[Val.high] >= this.MB.high) {
+            this.MB.comments.push(`New High(${data[Val.high]}) Normal Sell Cancelled Band Revise at ${this.getTimeForComment(data)}`);
+            this.MB.status = Order.nill
+            this.MB.high = data[Val.high];
+            this.MB.allHigh = data[Val.high];
+            this.setUpperBandAndLowerBand(data);
           }
           //cancel Buy Order
           //check new low
