@@ -77,7 +77,6 @@ export class PracticeCompComponent implements OnInit {
   constructor(private datas: DataService) { 
     
     this.datas.selectedData.subscribe(({datas,diff}) => {
-      debugger
       if (datas.length) {
         this.buySellDiff = diff;
         this.mainFunction(datas)
