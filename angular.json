@@ -65,7 +65,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "Kanna-statergyAngular:build"
+            "browserTarget": "Kanna-statergyAngular:build",
+            "port": 4201
           },
           "configurations": {
             "production": {
