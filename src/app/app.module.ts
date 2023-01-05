@@ -5,16 +5,16 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PracticeCompComponent } from './practice-comp/practice-comp.component';
-import { TestingPerDayComponent } from './testing-per-day/testing-per-day.component';
 import { TradeAutomationComponent } from './trade-automation/trade-automation.component';
+import { MultiDayComponent } from './multi-day/multi-day.component';
+import { MultiDayBaseComponent } from './multi-day/multi-day-base/multi-day-base.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PracticeCompComponent,
-    TestingPerDayComponent,
-    TradeAutomationComponent
+    TradeAutomationComponent,
+    MultiDayComponent,
+    MultiDayBaseComponent
   ],
   imports: [
     BrowserModule,

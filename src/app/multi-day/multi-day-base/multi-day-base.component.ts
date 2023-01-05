@@ -1,6 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-
-import { DataService } from '../data.service';
+import { Component, OnInit } from '@angular/core';
+import { DataService } from 'src/app/data.service';
 
 interface MartketData {
   date?: Date,
@@ -58,11 +57,12 @@ enum Order {
   completed = 12,
 }
 @Component({
-  selector: 'app-practice-comp',
-  templateUrl: './practice-comp.component.html',
-  styleUrls: ['./practice-comp.component.css']
+  selector: 'app-multi-day-base',
+  templateUrl: './multi-day-base.component.html',
+  styleUrls: ['./multi-day-base.component.css']
 })
-export class PracticeCompComponent implements OnInit {
+export class MultiDayBaseComponent implements OnInit {
+
   buySellDiff: number = 0;
   buySide: number[] = [6, 7, 10, 11, 12, 13]
   sellSide: number[] = [8, 9, 14, 15, 16, 17]
@@ -77,6 +77,7 @@ export class PracticeCompComponent implements OnInit {
   constructor(private datas: DataService) {
 
     this.datas.selectedData.subscribe(({ datas, diff }) => {
+      debugger
       if (datas.length) {
         this.buySellDiff = diff;
         this.mainFunction(datas)
@@ -1125,10 +1126,3 @@ export class PracticeCompComponent implements OnInit {
 
   }
 }
- // this.MB.comments.push(`TGT Reached New High(${data[Val.high]}) at ${this.getTimeForComment(data)}`)
-              // this.MB.high = data[Val.high];
-              // this.MB.allHigh = data[Val.high];
-              // this.setUpperBandAndLowerBand(data);
-              // this.MB.comments.push(`Convert To normal Buy order ${this.MB.priceToTrade} at ${this.getTimeForComment(data)}`)
-              // this.MB.target = 0;
-              // this.MB.stopLoss = 0;

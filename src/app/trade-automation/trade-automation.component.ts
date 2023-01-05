@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiServiceService } from '../api-service.service';
+import { DataService } from '../data.service';
 
 interface MartketData {
   date?: Date,
@@ -80,19 +81,10 @@ export class TradeAutomationComponent implements OnInit {
   trades: { side: string, exec: number, isLast?: boolean }[] = [];
   totalPointsEarned: number = 0
 
-  constructor(public apiService: ApiServiceService) {
+  constructor(public apiService: ApiServiceService, public dataService: DataService) {
     this.today = new Date();
 
-    let token = localStorage.getItem('token');
-    if (token) {
-      this.token = token;
-      this.apiService.getEvery5MinsData(this.today.toISOString().split('T')[0], token).subscribe((data: any) => {
-        console.log(data);
-        this.resetData()
-        this.mainFunction(data.data.candles);
-        this.lastCandelTime = new Date(data.data.candles[data.data.candles.length - 1][0])
-      })
-    } else { alert('Token not available,Please set Token') }
+    this.reload();
 
     setInterval(() => {
       let date = new Date();
@@ -112,6 +104,19 @@ export class TradeAutomationComponent implements OnInit {
     }, 2000)
   }
 
+  reload(){
+    this.today = new Date(this.today)
+    let token = localStorage.getItem('token');
+    if (token) {
+      this.token = token;
+      this.apiService.getEvery5MinsData(this.today.toISOString().split('T')[0], token).subscribe((data: any) => {
+        console.log(data);
+        this.resetData()
+        this.mainFunction(data.data.candles);
+        this.lastCandelTime = new Date(data.data.candles[data.data.candles.length - 1][0])
+      })
+    } else { alert('Token not available,Please set Token') }
+  }
   resetData() {
     this.MB = {
       allHigh: 0, allLow: 0, high: 0, low: 0, open: 0, UB: 0, LB: 0, target: 0, stopLoss: 0, priceToTrade: 0, trades: [], status: Order.nill, isFirstTrade: true, comments: [], slOrderStatus: 1, slOrderPlaced: false, slPriceToTrade: 0

@@ -1,96 +1,18 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" (click)="goTo(0)">Auto Trade</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" (click)="goTo(1)">Per day check</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" (click)="goTo(2)">Overall check</a>
-        </li>
-      </ul>
+      <div class="btn-group">
+        <a class="btn btn-outline-primary" routerLinkActive="active" routerLink="/home">Auto Trade</a>
+        <a  class="btn btn-outline-primary" routerLinkActive="active" routerLink="/Muti-day">Bulk check</a>
+      </div>
     </div>
+  
   </div>
 </nav>
 
 <div class="container-fluid">
 
+  <router-outlet></router-outlet>
 
-
-
-  <app-practice-comp></app-practice-comp>
-  <app-trade-automation></app-trade-automation>
-  <!-- <app-testing-per-day></app-testing-per-day> -->
-
-
-  <div class="row">
-    <div class="col-12">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Date</th>
-            <th scope="col">No Of Trades</th>
-            <th scope="col">Trade Cost</th>
-            <th scope="col">Points Earned</th>
-            <th scope="col">Size</th>
-            <th scope="col">Profit/Loss</th>
-            <th scope="col">Realised Profit</th>
-            <th scope="col">check</th>
-
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let result of resultData;let i = index">
-            <th scope="row">{{i + 1}}</th>
-            <td>{{result?.date | date}}</td>
-            <td>{{result?.noOfTrades}}</td>
-            <td>{{result?.tradeCost}}</td>
-            <td>{{result?.ProfitAndLoss}}</td>
-            <td>{{size}}</td>
-            <td>
-              <span *ngIf="customParseFloat(result.ProfitAndLoss * size) > 0" style="color: green;">
-                &#x20b9; {{customParseFloat(result.ProfitAndLoss * size)}}
-              </span>
-              <span *ngIf="customParseFloat(result.ProfitAndLoss * size) < 0" style="color: red;">
-                &#x20b9; {{customParseFloat(result.ProfitAndLoss * size)}}
-              </span>
-            </td>
-            <td>
-              <span *ngIf="customParseFloat((result.ProfitAndLoss * size) - result.tradeCost) > 0"
-                style="color: green;">
-                &#x20b9; {{customParseFloat((result.ProfitAndLoss * size) - result.tradeCost)}}
-              </span>
-              <span *ngIf="customParseFloat((result.ProfitAndLoss * size) - result.tradeCost) < 0" style="color: red;">
-                &#x20b9; {{customParseFloat((result.ProfitAndLoss * size) - result.tradeCost)}}
-              </span>
-            </td>
-            <td>{{result.demo}}</td>
-
-          </tr>
-          <tr>
-            <td>Total Trades:{{datas.totalTrades}} * 200 </td>
-            <td>Trade cost:{{datas.totalTrades * 200}}</td>
-            <td></td>
-            <td></td>
-            <td>
-              <h3>Total</h3>
-            </td>
-            <td>
-              <h3>{{customParseFloat(totalPoints * size)}}</h3>
-            </td>
-            <td>
-              <h3>Realized Profit </h3>
-            </td>
-            <td>
-              <h3>{{customParseFloat((totalPoints * size) - totalTradeCost)}}</h3>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+  
 </div>
