@@ -63,20 +63,20 @@ enum Order {
   styleUrls: ['./practice-comp.component.css']
 })
 export class PracticeCompComponent implements OnInit {
-  buySellDiff: number = 0 ;
+  buySellDiff: number = 0;
   buySide: number[] = [6, 7, 10, 11, 12, 13]
   sellSide: number[] = [8, 9, 14, 15, 16, 17]
   startTime: string = '09:15:00+0530';
   endTime: string = '15:15:00+0530';
-  
+
   MB: MartketData = {
     allHigh: 0, allLow: 0, high: 0, low: 0, open: 0, UB: 0, LB: 0, target: 0, stopLoss: 0, priceToTrade: 0, trades: [], status: Order.nill, isFirstTrade: true, comments: [], slOrderStatus: 1, slOrderPlaced: false, slPriceToTrade: 0
   };
   trades: { side: string, exec: number, isLast?: boolean }[] = [];
   totalPointsEarned: number = 0
-  constructor(private datas: DataService) { 
-    
-    this.datas.selectedData.subscribe(({datas,diff}) => {
+  constructor(private datas: DataService) {
+
+    this.datas.selectedData.subscribe(({ datas, diff }) => {
       if (datas.length) {
         this.buySellDiff = diff;
         this.mainFunction(datas)
@@ -101,21 +101,21 @@ export class PracticeCompComponent implements OnInit {
     this.totalPointsEarned = 0
     this.trades = [];
   }
-  mainFunction(datas:any[]) {
+  mainFunction(datas: any[]) {
     this.resetData();
 
-        // this.resetData();
-        let start = datas[0][0].split('T');
-        start[1] = this.startTime
-        let end = datas[0][0].split('T');
-        end[1] = this.endTime
-    
-        start = new Date(start.join('T'))
-        end = new Date(end.join('T'))
-    
+    // this.resetData();
+    let start = datas[0][0].split('T');
+    start[1] = this.startTime
+    let end = datas[0][0].split('T');
+    end[1] = this.endTime
+
+    start = new Date(start.join('T'))
+    end = new Date(end.join('T'))
+
     datas.forEach((data, index) => {
 
-      
+
       if (new Date(data[0]).getTime() < start.getTime()) return;
       if (new Date(data[0]).getTime() == start.getTime()) {
         this.MB.date = data[0]
@@ -158,9 +158,9 @@ export class PracticeCompComponent implements OnInit {
 
 
 
-    
 
-        switch (this.MB.status) {
+
+      switch (this.MB.status) {
         case 1: {
           //No Trade
           this.checkToPlaceOrder(data);
@@ -197,12 +197,12 @@ export class PracticeCompComponent implements OnInit {
               this.MB.priceToTrade = data[Val.low] - this.buySellDiff;
               this.MB.target = 0;
               this.MB.stopLoss = 0;
-              this.MB.comments.push(`LB Normal Sell Order Placed at${data[Val.low - this.buySellDiff]} ${this.getTimeForComment(data)}`)
+              this.MB.comments.push(`LB Normal Sell Order Placed at${data[Val.low] - this.buySellDiff} ${this.getTimeForComment(data)}`)
             } else {
               this.MB.status = Order.pendingSellTarget;
               this.MB.priceToTrade = data[Val.low] - this.buySellDiff;
               this.setTargetFunction('BUY')
-              this.MB.comments.push(`LB TGT SELL Order Placed at${data[Val.low - this.buySellDiff]} TGT:${this.MB.target} , SL:${this.MB.stopLoss} ${this.getTimeForComment(data)}`)
+              this.MB.comments.push(`LB TGT SELL Order Placed at${data[Val.low] - this.buySellDiff} TGT:${this.MB.target} , SL:${this.MB.stopLoss} ${this.getTimeForComment(data)}`)
             }
 
             if (data[Val.low] <= this.MB.low) {
@@ -1116,7 +1116,7 @@ export class PracticeCompComponent implements OnInit {
       }
     })
     this.totalPointsEarned = points.pointsEarned
-    this.datas.setResultEachDay({date: this.MB.date,ProfitAndLoss: this.customParseFloat(this.totalPointsEarned),noOfTrades: this.trades.length})
+    this.datas.setResultEachDay({ date: this.MB.date, ProfitAndLoss: this.customParseFloat(this.totalPointsEarned), noOfTrades: this.trades.length })
     // alert(this.totalPointsEarned)
   }
 

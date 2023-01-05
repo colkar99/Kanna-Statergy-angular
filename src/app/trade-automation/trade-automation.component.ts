@@ -81,27 +81,27 @@ export class TradeAutomationComponent implements OnInit {
   totalPointsEarned: number = 0
 
   constructor(public apiService: ApiServiceService) {
-    this.today =new Date();
+    this.today = new Date();
 
     let token = localStorage.getItem('token');
-    if(token){
+    if (token) {
       this.token = token;
-      this.apiService.getEvery5MinsData(this.today.toISOString().split('T')[0],token).subscribe((data: any) =>{
+      this.apiService.getEvery5MinsData(this.today.toISOString().split('T')[0], token).subscribe((data: any) => {
         console.log(data);
         this.resetData()
         this.mainFunction(data.data.candles);
         this.lastCandelTime = new Date(data.data.candles[data.data.candles.length - 1][0])
       })
-    }else{alert('Token not available,Please set Token')}
-    
+    } else { alert('Token not available,Please set Token') }
+
     setInterval(() => {
       let date = new Date();
-      if(date.getMinutes() % 5 != 0) this.reached = false;
-      if (date.getMinutes() % 5 == 0 && !this.reached ) {
+      if (date.getMinutes() % 5 != 0) this.reached = false;
+      if (date.getMinutes() % 5 == 0 && !this.reached) {
         let today = new Date(this.today)
-        this.reached  = true
-        alert(date.getMinutes() + " Minutes");
-        this.apiService.getEvery5MinsData(today.toISOString().split('T')[0],this.token).subscribe((data: any) =>{
+        this.reached = true
+        // alert(date.getMinutes() + " Minutes");
+        this.apiService.getEvery5MinsData(today.toISOString().split('T')[0], this.token).subscribe((data: any) => {
           debugger
           console.log(data);
           this.resetData()
@@ -120,10 +120,10 @@ export class TradeAutomationComponent implements OnInit {
     this.trades = [];
   }
   // setting token
-  setToken(type: string){
-    if(type == 'set' && this.token){
-      localStorage.setItem('token',this.token);
-    }else{
+  setToken(type: string) {
+    if (type == 'set' && this.token) {
+      localStorage.setItem('token', this.token);
+    } else {
       localStorage.clear()
     }
   }
@@ -215,19 +215,18 @@ export class TradeAutomationComponent implements OnInit {
             //cancel Buy Order cnage status to 1
             this.MB.status = Order.nill
             this.MB.comments.push(`LB Normal Buy Cancelled at  ${this.getTimeForComment(data)}`)
-
             //Place normal Buy/ Tgt buy order
             if (data[Val.low] <= this.MB.low) {
               this.MB.status = Order.pendingSellNormal;
               this.MB.priceToTrade = data[Val.low] - this.buySellDiff;
               this.MB.target = 0;
               this.MB.stopLoss = 0;
-              this.MB.comments.push(`LB Normal Sell Order Placed at${data[Val.low - this.buySellDiff]} ${this.getTimeForComment(data)}`)
+              this.MB.comments.push(`LB Normal Sell Order Placed at ${data[Val.low] - this.buySellDiff} ${this.getTimeForComment(data)}`)
             } else {
               this.MB.status = Order.pendingSellTarget;
               this.MB.priceToTrade = data[Val.low] - this.buySellDiff;
               this.setTargetFunction('BUY')
-              this.MB.comments.push(`LB TGT SELL Order Placed at${data[Val.low - this.buySellDiff]} TGT:${this.MB.target} , SL:${this.MB.stopLoss} ${this.getTimeForComment(data)}`)
+              this.MB.comments.push(`LB TGT SELL Order Placed at${data[Val.low] - this.buySellDiff} TGT:${this.MB.target} , SL:${this.MB.stopLoss} ${this.getTimeForComment(data)}`)
             }
 
             if (data[Val.low] <= this.MB.low) {

@@ -1,9 +1,33 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" (click)="goTo(0)">Auto Trade</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="goTo(1)">Per day check</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="goTo(2)">Overall check</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
 <div class="container-fluid">
-  <!-- <app-practice-comp ></app-practice-comp> -->
-    <app-trade-automation></app-trade-automation>
+
+
+
+
+  <app-practice-comp></app-practice-comp>
+  <app-trade-automation></app-trade-automation>
   <!-- <app-testing-per-day></app-testing-per-day> -->
+
+
   <div class="row">
-    <div class="col-12" >
+    <div class="col-12">
       <table class="table">
         <thead>
           <tr>
@@ -27,7 +51,7 @@
             <td>{{result?.tradeCost}}</td>
             <td>{{result?.ProfitAndLoss}}</td>
             <td>{{size}}</td>
-            <td >
+            <td>
               <span *ngIf="customParseFloat(result.ProfitAndLoss * size) > 0" style="color: green;">
                 &#x20b9; {{customParseFloat(result.ProfitAndLoss * size)}}
               </span>
@@ -35,8 +59,9 @@
                 &#x20b9; {{customParseFloat(result.ProfitAndLoss * size)}}
               </span>
             </td>
-            <td >
-              <span *ngIf="customParseFloat((result.ProfitAndLoss * size) - result.tradeCost) > 0" style="color: green;">
+            <td>
+              <span *ngIf="customParseFloat((result.ProfitAndLoss * size) - result.tradeCost) > 0"
+                style="color: green;">
                 &#x20b9; {{customParseFloat((result.ProfitAndLoss * size) - result.tradeCost)}}
               </span>
               <span *ngIf="customParseFloat((result.ProfitAndLoss * size) - result.tradeCost) < 0" style="color: red;">
@@ -51,10 +76,18 @@
             <td>Trade cost:{{datas.totalTrades * 200}}</td>
             <td></td>
             <td></td>
-            <td><h3>Total</h3></td>
-            <td><h3>{{customParseFloat(totalPoints * size)}}</h3></td>
-            <td><h3>Realized Profit </h3></td>
-            <td><h3>{{customParseFloat((totalPoints * size) - totalTradeCost)}}</h3></td>
+            <td>
+              <h3>Total</h3>
+            </td>
+            <td>
+              <h3>{{customParseFloat(totalPoints * size)}}</h3>
+            </td>
+            <td>
+              <h3>Realized Profit </h3>
+            </td>
+            <td>
+              <h3>{{customParseFloat((totalPoints * size) - totalTradeCost)}}</h3>
+            </td>
           </tr>
         </tbody>
       </table>
