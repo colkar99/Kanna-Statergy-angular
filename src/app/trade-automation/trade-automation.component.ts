@@ -203,12 +203,12 @@ export class TradeAutomationComponent implements OnInit {
             //exec Order
             this.MB.isFirstTrade = false;
             this.MB.status = Order.liveBuyNormal;
-            this.MB.comments.push(`Normal Buy Order EXEC at ${this.MB.priceToTrade} ${this.getTimeForComment(data)}`)
+            this.MB.comments.push(`Normal Buy Order EXEC at ${this.MB.priceToTrade.toFixed(2)} ${this.getTimeForComment(data)}`)
             this.trades.push({ side: 'BUY', exec: this.MB.priceToTrade, isLast: false })
 
             //new High
             if (data[Val.high] > this.MB.high) {
-              this.MB.comments.push(`New High(${data[Val.high]}) Band Revise at ${this.getTimeForComment(data)}`)
+              this.MB.comments.push(`New High(${data[Val.high].toFixed(2)}) Band Revise at ${this.getTimeForComment(data)}`)
               this.MB.high = data[Val.high];
               this.MB.allHigh = data[Val.high];
               this.setUpperBandAndLowerBand(data);
@@ -226,16 +226,16 @@ export class TradeAutomationComponent implements OnInit {
               this.MB.priceToTrade = data[Val.low] - this.buySellDiff;
               this.MB.target = 0;
               this.MB.stopLoss = 0;
-              this.MB.comments.push(`LB Normal Sell Order Placed at ${data[Val.low] - this.buySellDiff} ${this.getTimeForComment(data)}`)
+              this.MB.comments.push(`LB Normal Sell Order Placed at ${this.MB.priceToTrade.toFixed(2)} ${this.getTimeForComment(data)}`)
             } else {
               this.MB.status = Order.pendingSellTarget;
               this.MB.priceToTrade = data[Val.low] - this.buySellDiff;
               this.setTargetFunction('BUY')
-              this.MB.comments.push(`LB TGT SELL Order Placed at${data[Val.low] - this.buySellDiff} TGT:${this.MB.target} , SL:${this.MB.stopLoss} ${this.getTimeForComment(data)}`)
+              this.MB.comments.push(`LB TGT SELL Order Placed at${this.MB.priceToTrade.toFixed(2)} TGT:${this.MB.target.toFixed(2)} , SL:${this.MB.stopLoss} ${this.getTimeForComment(data)}`)
             }
 
             if (data[Val.low] <= this.MB.low) {
-              this.MB.comments.push(`New Low(${data[Val.low]}) Band Revise at ${this.getTimeForComment(data)}`)
+              this.MB.comments.push(`New Low(${data[Val.low].toFixed(2)}) Band Revise at ${this.getTimeForComment(data)}`)
               this.MB.low = data[Val.low];
               this.MB.allLow = data[Val.low];
               this.setUpperBandAndLowerBand(data);
@@ -246,7 +246,7 @@ export class TradeAutomationComponent implements OnInit {
           if (data[Val.low] <= this.MB.low) {
             //Cancel normal buy order
             this.MB.status = Order.nill;
-            this.MB.comments.push(`New Low(${data[Val.low]}) Cancel Normal buy order Band Revise at ${this.getTimeForComment(data)}`)
+            this.MB.comments.push(`New Low(${data[Val.low].toFixed(2)}) Cancel Normal buy order Band Revise at ${this.getTimeForComment(data)}`)
             this.MB.low = data[Val.low];
             this.MB.allLow = data[Val.low];
             this.setUpperBandAndLowerBand(data);
@@ -264,7 +264,7 @@ export class TradeAutomationComponent implements OnInit {
           if (data[Val.high] >= this.MB.priceToTrade) {
             this.MB.isFirstTrade = false;
             this.MB.status = Order.liveBuyTarget;
-            this.MB.comments.push(`TGT Buy Order EXEC ${this.MB.priceToTrade} TGT:${this.MB.target} SL:${this.MB.stopLoss}  at ${this.getTimeForComment(data)}`)
+            this.MB.comments.push(`TGT Buy Order EXEC ${this.MB.priceToTrade.toFixed(2)} TGT:${this.MB.target.toFixed(2)} SL:${this.MB.stopLoss.toFixed(2)}  at ${this.getTimeForComment(data)}`)
             this.trades.push({ side: 'BUY', exec: this.MB.priceToTrade, isLast: false })
 
             return
@@ -286,11 +286,11 @@ export class TradeAutomationComponent implements OnInit {
               this.MB.comments.push(`New Low(${data[Val.low]}) at ${this.getTimeForComment(data)}`)
               this.setUpperBandAndLowerBand(data);
               this.MB.status = Order.pendingSellNormal
-              this.MB.comments.push(`SL Reached Normall sell order Placed at ${this.MB.priceToTrade} at ${this.getTimeForComment(data)}`)
+              this.MB.comments.push(`SL Reached Normall sell order Placed at ${this.MB.priceToTrade.toFixed(2)} at ${this.getTimeForComment(data)}`)
             } else {
               this.MB.status = Order.pendingSellTarget
               this.setTargetFunction('SELL')
-              this.MB.comments.push(`SL Reached TGT sell order Placed at ${this.MB.priceToTrade} TGT${this.MB.target} sl:${this.MB.stopLoss} at ${this.getTimeForComment(data)}`)
+              this.MB.comments.push(`SL Reached TGT sell order Placed at ${this.MB.priceToTrade.toFixed(2)} TGT${this.MB.target.toFixed(2)} sl:${this.MB.stopLoss.toFixed(2)} at ${this.getTimeForComment(data)}`)
 
               //Target Order
 
@@ -308,12 +308,12 @@ export class TradeAutomationComponent implements OnInit {
             //exec Order
             this.MB.isFirstTrade = false;
             this.MB.status = Order.liveSellNormal;
-            this.MB.comments.push(`Normal sell Order EXEC at ${this.MB.priceToTrade} ${this.getTimeForComment(data)}`)
+            this.MB.comments.push(`Normal sell Order EXEC at ${this.MB.priceToTrade.toFixed(2)} ${this.getTimeForComment(data)}`)
             this.trades.push({ side: 'SELL', exec: this.MB.priceToTrade, isLast: false })
 
             //new low
             if (data[Val.low] < this.MB.low) {
-              this.MB.comments.push(`New Low(${data[Val.low]}) Band Revise at ${this.getTimeForComment(data)}`)
+              this.MB.comments.push(`New Low(${data[Val.low].toFixed(2)}) Band Revise at ${this.getTimeForComment(data)}`)
               this.MB.low = data[Val.low];
               this.MB.allLow = data[Val.low];
               this.setUpperBandAndLowerBand(data);
@@ -339,11 +339,11 @@ export class TradeAutomationComponent implements OnInit {
               this.MB.status = Order.pendingBUYTarget;
               this.MB.priceToTrade = data[Val.high] + this.buySellDiff;
               this.setTargetFunction('BUY')
-              this.MB.comments.push(`UB TGT Buy Order Placed at ${this.MB.priceToTrade} TGT:${this.MB.target} , SL:${this.MB.stopLoss} ${this.getTimeForComment(data)}`)
+              this.MB.comments.push(`UB TGT Buy Order Placed at ${this.MB.priceToTrade.toFixed(2)} TGT:${this.MB.target.toFixed(2)} , SL:${this.MB.stopLoss} ${this.getTimeForComment(data)}`)
             }
 
             if (data[Val.high] >= this.MB.high) {
-              this.MB.comments.push(`New High(${data[Val.high]}) Band Revise at ${this.getTimeForComment(data)}`)
+              this.MB.comments.push(`New High(${data[Val.high].toFixed(2)}) Band Revise at ${this.getTimeForComment(data)}`)
               this.MB.high = data[Val.high];
               this.MB.allHigh = data[Val.high];
               this.setUpperBandAndLowerBand(data);
@@ -352,7 +352,7 @@ export class TradeAutomationComponent implements OnInit {
           }
 
           if (data[Val.high] >= this.MB.high) {
-            this.MB.comments.push(`New High(${data[Val.high]}) Normal Sell Cancelled Band Revise at ${this.getTimeForComment(data)}`);
+            this.MB.comments.push(`New High(${data[Val.high].toFixed(2)}) Normal Sell Cancelled Band Revise at ${this.getTimeForComment(data)}`);
             this.MB.status = Order.nill
             this.MB.high = data[Val.high];
             this.MB.allHigh = data[Val.high];
@@ -368,7 +368,7 @@ export class TradeAutomationComponent implements OnInit {
           if (data[Val.low] <= this.MB.priceToTrade) {
             this.MB.isFirstTrade = false;
             this.MB.status = Order.liveSellTarget;
-            this.MB.comments.push(`TGT Sell Order EXEC ${this.MB.priceToTrade} TGT:${this.MB.target} SL:${this.MB.stopLoss}  at ${this.getTimeForComment(data)}`)
+            this.MB.comments.push(`TGT Sell Order EXEC ${this.MB.priceToTrade.toFixed(2)} TGT:${this.MB.target.toFixed(2)} SL:${this.MB.stopLoss.toFixed(2)}  at ${this.getTimeForComment(data)}`)
             this.trades.push({ side: 'SELL', exec: this.MB.priceToTrade, isLast: false })
 
             return
@@ -391,11 +391,11 @@ export class TradeAutomationComponent implements OnInit {
               this.MB.comments.push(`New High(${data[Val.high]}) at ${this.getTimeForComment(data)}`)
               this.setUpperBandAndLowerBand(data);
               this.MB.status = Order.pendingBUYNomal
-              this.MB.comments.push(`SL Reached Normall Buy order Placed at ${this.MB.priceToTrade} at ${this.getTimeForComment(data)}`)
+              this.MB.comments.push(`SL Reached Normall Buy order Placed at ${this.MB.priceToTrade.toFixed(2)} at ${this.getTimeForComment(data)}`)
             } else {
               this.MB.status = Order.pendingBUYTarget
               this.setTargetFunction('BUY')
-              this.MB.comments.push(`SL Reached TGT BUY order Placed at ${this.MB.priceToTrade} TGT${this.MB.target} sl:${this.MB.stopLoss} at ${this.getTimeForComment(data)}`)
+              this.MB.comments.push(`SL Reached TGT BUY order Placed at ${this.MB.priceToTrade.toFixed(2)} TGT${this.MB.target.toFixed(2)} sl:${this.MB.stopLoss.toFixed(2)} at ${this.getTimeForComment(data)}`)
               //Target Order
             }
             //check new Low   
@@ -414,7 +414,7 @@ export class TradeAutomationComponent implements OnInit {
               this.MB.slOrderPlaced = true;
               this.MB.slOrderStatus = Order.pendingSellNormal;
               this.MB.slPriceToTrade = data[Val.low] - this.buySellDiff;
-              this.MB.comments.push(`LB reached SL SELL Normal Order placed at ${this.MB.slPriceToTrade} ${this.getTimeForComment(data)}`)
+              this.MB.comments.push(`LB reached SL SELL Normal Order placed at ${this.MB.slPriceToTrade.toFixed(2)} ${this.getTimeForComment(data)}`)
             } else {
               //SL Sell Target Order
               this.MB.status = Order.liveBuyNormalSlSellTarget;
@@ -422,7 +422,7 @@ export class TradeAutomationComponent implements OnInit {
               this.MB.slOrderStatus = Order.pendingSellTarget;
               this.MB.slPriceToTrade = data[Val.low] - this.buySellDiff;
               this.setTargetFunction('SELL');
-              this.MB.comments.push(`LB reached SL SELL TGT Order placed at ${this.MB.slPriceToTrade} Target:${this.MB.target} stoploss:${this.MB.stopLoss} ${this.getTimeForComment(data)}`)
+              this.MB.comments.push(`LB reached SL SELL TGT Order placed at ${this.MB.slPriceToTrade.toFixed(2)} Target:${this.MB.target.toFixed(2)} stoploss:${this.MB.stopLoss.toFixed(2)} ${this.getTimeForComment(data)}`)
             }
 
             //Low <= new Low
@@ -460,7 +460,7 @@ export class TradeAutomationComponent implements OnInit {
               this.MB.slOrderPlaced = true;
               this.MB.slOrderStatus = Order.pendingSellNormal;
               this.MB.slPriceToTrade = data[Val.low] - this.buySellDiff;
-              this.MB.comments.push(`Stoploss reached SL SELL Normal Order placed at ${this.MB.slPriceToTrade} ${this.getTimeForComment(data)}`)
+              this.MB.comments.push(`Stoploss reached SL SELL Normal Order placed at ${this.MB.slPriceToTrade.toFixed(2)} ${this.getTimeForComment(data)}`)
             } else {
               //SL Sell Target Order
               this.MB.status = Order.liveBuyTargetSlSellTarget;
@@ -468,7 +468,7 @@ export class TradeAutomationComponent implements OnInit {
               this.MB.slOrderStatus = Order.pendingSellTarget;
               this.MB.slPriceToTrade = data[Val.low] - this.buySellDiff;
               this.setTargetFunction('SELL');
-              this.MB.comments.push(`Stoploss reached SL SELL TGT Order placed at ${this.MB.slPriceToTrade} Target:${this.MB.target} stoploss:${this.MB.stopLoss} ${this.getTimeForComment(data)}`)
+              this.MB.comments.push(`Stoploss reached SL SELL TGT Order placed at ${this.MB.slPriceToTrade.toFixed(2)} Target:${this.MB.target.toFixed(2)} stoploss:${this.MB.stopLoss.toFixed(2)} ${this.getTimeForComment(data)}`)
             }
 
             //Low <= new Low
@@ -495,7 +495,7 @@ export class TradeAutomationComponent implements OnInit {
             this.MB.target = 0;
             this.MB.stopLoss = 0;
             this.MB.status = Order.liveBuyNormal;
-            this.MB.comments.push(`Target Reached Convert TGT BUY to Normal BUY at: ${this.MB.priceToTrade} ${this.getTimeForComment(data)}`);
+            this.MB.comments.push(`Target Reached Convert TGT BUY to Normal BUY at: ${this.MB.priceToTrade.toFixed(2)} ${this.getTimeForComment(data)}`);
 
           }
 
@@ -513,7 +513,7 @@ export class TradeAutomationComponent implements OnInit {
               this.MB.slOrderPlaced = true;
               this.MB.slOrderStatus = Order.pendingBUYNomal;
               this.MB.slPriceToTrade = data[Val.high] + this.buySellDiff;
-              this.MB.comments.push(`UB reached SL Buy Normal Order placed at ${this.MB.slPriceToTrade} ${this.getTimeForComment(data)}`)
+              this.MB.comments.push(`UB reached SL Buy Normal Order placed at ${this.MB.slPriceToTrade.toFixed(2)} ${this.getTimeForComment(data)}`)
             } else {
               //SL BUY Target Order
               this.MB.status = Order.liveSellNormalSlBuyTarget;
@@ -521,7 +521,7 @@ export class TradeAutomationComponent implements OnInit {
               this.MB.slOrderStatus = Order.pendingBUYTarget;
               this.MB.slPriceToTrade = data[Val.high] + this.buySellDiff;
               this.setTargetFunction('BUY');
-              this.MB.comments.push(`UB reached SL BUY TGT Order placed at ${this.MB.slPriceToTrade} Target:${this.MB.target} stoploss:${this.MB.stopLoss} ${this.getTimeForComment(data)}`)
+              this.MB.comments.push(`UB reached SL BUY TGT Order placed at ${this.MB.slPriceToTrade.toFixed(2)} Target:${this.MB.target.toFixed(2)} stoploss:${this.MB.stopLoss.toFixed(2)} ${this.getTimeForComment(data)}`)
             }
 
             //High >= new High
