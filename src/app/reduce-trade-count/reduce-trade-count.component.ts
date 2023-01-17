@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../data.service';
+import { ReduceCountService } from './reduce.service';
+
+
+
 
 @Component({
-  selector: 'app-multi-day',
-  templateUrl: './multi-day.component.html',
-  styleUrls: ['./multi-day.component.css']
+  selector: 'app-reduce-trade-count',
+  templateUrl: './reduce-trade-count.component.html',
+  styleUrls: ['./reduce-trade-count.component.css']
 })
-export class MultiDayComponent implements OnInit {
-
+export class ReduceTradeCountComponent implements OnInit {
   // perTradeCost: number = 120;
   // size: number = 50;
 
@@ -27,13 +29,13 @@ export class MultiDayComponent implements OnInit {
   //   this.totalTradeCost = 0
   //   this.realizedProfit = 0
   // }
-  constructor(public datas: DataService) {
+  constructor(public datas: ReduceCountService) {
     this.datas.resetSetData()
     this.datas.totalTrades = 0;
 
 
-    this.datas.resultEachDay.subscribe((data) => {
-      console.log(data)
+    this.datas.resultEachDay2.subscribe((data) => {
+      debugger
       this.totalPoints += data.ProfitAndLoss;
 
       data.tradeCost = data.noOfTrades * this.datas.pertTradeCost;
@@ -60,7 +62,7 @@ export class MultiDayComponent implements OnInit {
       this.structureData[date].push(data)
     })
     for (let stru in this.structureData) {
-      this.datas.setData({ datas: this.structureData[stru], diff: this.buySellDiff });
+      this.datas.setData2({ datas: this.structureData[stru], diff: this.buySellDiff });
       // return
     }
     console.log(this.structureData)
@@ -73,4 +75,6 @@ export class MultiDayComponent implements OnInit {
   customParseFloat(value: number) {
     return parseFloat(value.toFixed(2))
   }
+
+
 }
