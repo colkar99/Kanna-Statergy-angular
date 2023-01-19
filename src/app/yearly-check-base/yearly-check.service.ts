@@ -1,14 +1,16 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable, EventEmitter } from '@angular/core';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ReduceCountService {
-    pertTradeCost: number = 0;
-    lotsize: number = 0;
+export class YearlyCheckService {
+    pertTradeCost: number = 130;
+    lotsize: number = 50;
     totalTrades: number = 0;
     selectedData2: EventEmitter<any> = new EventEmitter<any>();
     resultEachDay2: EventEmitter<any> = new EventEmitter<[]>();
+
 
 
     setData2(value: any) {
@@ -21,6 +23,7 @@ export class ReduceCountService {
     setResultEachDay2(data: any) {
         this.resultEachDay2.next(data);
     }
+
 
 
 
@@ -23588,5 +23591,8 @@ export class ReduceCountService {
             ]
         }
     }
+
+
+
     constructor() { }
 }

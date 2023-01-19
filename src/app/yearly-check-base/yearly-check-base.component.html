@@ -1,0 +1,100 @@
+<div class="row">
+    <div class="col-12">
+        <form [formGroup]="myForm" (ngSubmit)="submit()">
+            <div class="form-group col-4">
+                <label for="insumentId">Instrument Id</label>
+                <input type="text" class="form-control" id="insumentId" placeholder="Enter instrument Id"
+                    formControlName="instrumentId">
+            </div>
+            <div class="form-group col-4">
+                <label for="exampleInputPassword1">Lot size</label>
+                <input type="number" class="form-control" id="lot size" placeholder="Lot size"
+                    formControlName="lotSize">
+            </div>
+            <div class="form-group col-4">
+                <label for="exampleInputPassword1">Buy Sell Difference</label>
+                <input type="number" class="form-control" id="lot size" placeholder="Lot size"
+                    formControlName="buySellDiff">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
+<app-yearly-check-main>
+</app-yearly-check-main>
+<div class="row">
+    <div class="col-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">No Of Trades</th>
+                    <th scope="col">Trade Cost</th>
+                    <th scope="col">Points Earned</th>
+                    <th scope="col">Size</th>
+                    <th scope="col">Profit/Loss</th>
+                    <th scope="col">Realised Profit</th>
+                    <th scope="col">check</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let result of resultData;let i = index">
+                    <th scope="row">{{i + 1}}</th>
+                    <td>{{result?.date | date}}</td>
+                    <td>{{result?.noOfTrades}}</td>
+                    <td>{{result?.tradeCost}}</td>
+                    <td>{{result?.ProfitAndLoss}}</td>
+                    <td>{{myForm.value.lotSize}}</td>
+                    <td>
+                        <span *ngIf="customParseFloat(result.ProfitAndLoss * myForm.value.lotSize) > 0"
+                            style="color: green;">
+                            &#x20b9; {{customParseFloat(result.ProfitAndLoss * myForm.value.lotSize)}}
+                        </span>
+                        <span *ngIf="customParseFloat(result.ProfitAndLoss * myForm.value.lotSize) < 0"
+                            style="color: red;">
+                            &#x20b9; {{customParseFloat(result.ProfitAndLoss * myForm.value.lotSize)}}
+                        </span>
+                    </td>
+                    <td>
+                        <span
+                            *ngIf="customParseFloat((result.ProfitAndLoss * myForm.value.lotSize) - result.tradeCost) > 0"
+                            style="color: green;">
+                            &#x20b9; {{customParseFloat((result.ProfitAndLoss * myForm.value.lotSize) -
+                            result.tradeCost)}}
+                        </span>
+                        <span
+                            *ngIf="customParseFloat((result.ProfitAndLoss * myForm.value.lotSize) - result.tradeCost) < 0"
+                            style="color: red;">
+                            &#x20b9; {{customParseFloat((result.ProfitAndLoss * myForm.value.lotSize) -
+                            result.tradeCost)}}
+                        </span>
+                    </td>
+                    <td>{{result.demo}}</td>
+
+                </tr>
+                <tr>
+                    <td>Total Trades:{{datas.totalTrades}} * {{datas.pertTradeCost}} </td>
+                    <td>Trade cost:{{datas.totalTrades * datas.pertTradeCost}}</td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <h3>Total</h3>
+                    </td>
+                    <td>
+                        <h3>{{customParseFloat(totalPoints * myForm.value.lotSize)}}</h3>
+                    </td>
+                    <td>
+                        <h3>Realized Profit </h3>
+                    </td>
+                    <td>
+                        <h3>{{customParseFloat((totalPoints * myForm.value.lotSize) - (datas.pertTradeCost *
+                            datas.totalTrades))}}</h3>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
