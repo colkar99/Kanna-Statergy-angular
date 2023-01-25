@@ -12,8 +12,11 @@ import { ReduceCountService } from './reduce.service';
 export class ReduceTradeCountComponent implements OnInit {
   // perTradeCost: number = 120;
   // size: number = 50;
+//Bank nifty
+ buySellDiff: number = 45;
 
-  buySellDiff: number = 5;
+  // buySellDiff: number = 5;
+
   currentPage: number = 0;
 
   structureData: { [key: string]: any[] } = {};

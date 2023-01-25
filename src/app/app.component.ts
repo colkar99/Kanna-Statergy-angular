@@ -14,9 +14,9 @@ export class AppComponent implements OnInit {
 
   constructor(public datas: DataService, public reduceService: ReduceCountService) {
     this.datas.pertTradeCost = 120;
-    this.datas.lotsize = 50;
+    this.datas.lotsize = 25;
     this.reduceService.pertTradeCost = 120;
-    this.reduceService.lotsize = 50;
+    this.reduceService.lotsize = 25;
   }
   ngOnInit(): void {
     // this.setDatas()
