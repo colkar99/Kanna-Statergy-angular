@@ -50,13 +50,16 @@ export class MultiDayComponent implements OnInit {
     })
   }
   ngOnInit(): void {
-
-    this.setDatas()
+    this.datas.getDataFromFile().subscribe((data: any) => {
+      this.buySellDiff = data.diff;
+      this.datas.lotsize = data.qty;
+      this.setDatas(data)
+    })
   }
 
-  setDatas() {
+  setDatas(fullData: any) {
     this.structureData = {}
-    this.datas.datas2.data.candles.forEach((data) => {
+    fullData.data.candles.forEach((data: any) => {
       let date = new Date(data[0]).toLocaleDateString()
       if (!this.structureData[date]) {
         this.structureData[date] = []

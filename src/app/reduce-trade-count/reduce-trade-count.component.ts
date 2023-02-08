@@ -12,8 +12,8 @@ import { ReduceCountService } from './reduce.service';
 export class ReduceTradeCountComponent implements OnInit {
   // perTradeCost: number = 120;
   // size: number = 50;
-//Bank nifty
- buySellDiff: number = 45;
+  //Bank nifty
+  buySellDiff: number = 5;
 
   // buySellDiff: number = 5;
 
@@ -38,7 +38,6 @@ export class ReduceTradeCountComponent implements OnInit {
 
 
     this.datas.resultEachDay2.subscribe((data) => {
-      debugger
       this.totalPoints += data.ProfitAndLoss;
 
       data.tradeCost = data.noOfTrades * this.datas.pertTradeCost;
@@ -51,13 +50,18 @@ export class ReduceTradeCountComponent implements OnInit {
     })
   }
   ngOnInit(): void {
+    this.datas.getDataFromFile().subscribe((data: any) => {
+      this.buySellDiff = data.diff;
+      this.datas.lotsize = data.qty;
+      this.setDatas(data)
+    })
 
-    this.setDatas()
+
   }
 
-  setDatas() {
+  setDatas(fullData: any) {
     this.structureData = {}
-    this.datas.datas2.data.candles.forEach((data) => {
+    fullData.data.candles.forEach((data: any) => {
       let date = new Date(data[0]).toLocaleDateString()
       if (!this.structureData[date]) {
         this.structureData[date] = []
