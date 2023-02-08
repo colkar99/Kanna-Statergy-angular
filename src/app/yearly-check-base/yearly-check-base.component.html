@@ -13,14 +13,42 @@
             </div>
             <div class="form-group col-4">
                 <label for="exampleInputPassword1">Buy Sell Difference</label>
-                <input type="number" class="form-control" id="lot size" placeholder="Lot size"
+                <input type="number" class="form-control" id="lot size" placeholder="Buy Sell Diff"
                     formControlName="buySellDiff">
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
 </div>
-
+<div class="row">
+    <div class="col-3">
+        <h2>Max Drawdown</h2>
+        <h3>{{continousdrawDownTotal}}</h3>
+        <h3>{{continousdrawDownTotal / datas.investedAmount * 100 | number: '1.0-0'}} %</h3>
+    </div>
+    <div class="col-3">
+        <h2>P/L</h2>
+        <h3>{{customParseFloat((totalPoints * myForm.value.lotSize) - (datas.pertTradeCost *
+            datas.totalTrades)) | number: '1.0-0'}}</h3>
+    </div>
+    <div class="col-3">
+        <h2>P/L %</h2>
+        <h3>{{(customParseFloat((totalPoints * myForm.value.lotSize) - (datas.pertTradeCost *
+            datas.totalTrades))) / datas.investedAmount * 100 | number: '1.0-0'}}%</h3>
+    </div>
+    <div class="col-3">
+        <h2>Total Trades:</h2>
+        <h3>{{datas.totalTrades}}</h3>
+    </div>
+    <div class="col-3">
+        <h2>Invest Loss:</h2>
+        <h3>{{maxDrawDown | number: '1.0-0'}}</h3>
+    </div>
+    <div class="col-3">
+        <h2>Invest Loss%</h2>
+        <h3>{{(maxDrawDown / datas.investedAmount) * 100 | number: '1.0-0'}}</h3>
+    </div>
+</div>
 <app-yearly-check-main>
 </app-yearly-check-main>
 <div class="row">
@@ -72,7 +100,7 @@
                             result.tradeCost)}}
                         </span>
                     </td>
-                    <td>{{result.demo}}</td>
+                    <td>{{result.demo | number: '1.0-0'}}</td>
 
                 </tr>
                 <tr>

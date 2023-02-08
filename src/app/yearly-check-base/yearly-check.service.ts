@@ -5,12 +5,14 @@ import { Injectable, EventEmitter } from '@angular/core';
     providedIn: 'root'
 })
 export class YearlyCheckService {
-    pertTradeCost: number = 130;
+    instrumentId: string = '';
+    pertTradeCost: number = 120;
     lotsize: number = 50;
     totalTrades: number = 0;
     selectedData2: EventEmitter<any> = new EventEmitter<any>();
     resultEachDay2: EventEmitter<any> = new EventEmitter<[]>();
 
+    investedAmount: number = 110000;
 
 
     setData2(value: any) {

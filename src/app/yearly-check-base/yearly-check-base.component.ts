@@ -25,6 +25,8 @@ export class YearlyCheckBaseComponent implements OnInit {
     { f: '2022-07-01', t: '2022-08-31' },
     { f: '2022-09-01', t: '2022-10-31' },
     { f: '2022-11-01', t: '2022-12-31' },
+    { f: '2023-01-01', t: '2023-01-28' },
+
 
   ]
   results: any[] = []
@@ -37,6 +39,11 @@ export class YearlyCheckBaseComponent implements OnInit {
   totalPoints: number = 0;
   totalTradeCost: number = 0;
   realizedProfit: number = 0
+  maxDrawDown: number = 0;
+
+  continousdrawDown: number = 0
+  continousdrawDownTotal: number = 0
+
 
   // resetData(){
   //   this.structureData = {}
@@ -57,12 +64,19 @@ export class YearlyCheckBaseComponent implements OnInit {
 
     this.datas.resultEachDay2.subscribe((data) => {
       this.totalPoints += data.ProfitAndLoss;
+      
 
       data.tradeCost = data.noOfTrades * this.datas.pertTradeCost;
       this.totalTradeCost += data.tradeCost;
       data.realizedProfits = this.customParseFloat((data.ProfitAndLoss * this.myForm.value.lotSize) - data.tradeCost);
       this.realizedProfit += data.realizedProfits
       data.demo = this.realizedProfit;
+      if(data.demo < this.maxDrawDown) this.maxDrawDown = data.demo;
+      if(data.realizedProfits < 0 ) this.continousdrawDown += data.realizedProfits;
+      else {
+        if(this.continousdrawDown < this.continousdrawDownTotal) this.continousdrawDownTotal = this.continousdrawDown
+        this.continousdrawDown = 0;
+      }
       // data.demo += data.realizedProfits
       this.resultData.push(data)
     })
@@ -73,7 +87,6 @@ export class YearlyCheckBaseComponent implements OnInit {
   }
 
   setDatas() {
-    debugger
     this.structureData = {}
     this.results.forEach((data) => {
       let date = new Date(data[0]).toLocaleDateString()
@@ -99,30 +112,57 @@ export class YearlyCheckBaseComponent implements OnInit {
 
 
   submit() {
-    if (!this.myForm.value.instrumentId || !this.myForm.value.buySellDiff || !this.myForm.value.lotSize) {
+    debugger
+    if (!this.myForm.value.instrumentId || !this.myForm.value.buySellDiff) {
       alert('Instrument ID, Lot and BUYSELL Diff should not empty')
       return
     }
-    let token = localStorage.getItem('token');
-
-    let calls: any = []
-    this.monthData.forEach((data, i) => {
-      let d = { token: token, fromDate: data.f, toDate: data.t, instrumentId: this.myForm.value.instrumentId }
-      calls.push(this.apiService.getEvery5MinsDataByInstrument(d).pipe(map((da: any) => da.data.candles)))
-
-    })
-
-
-    forkJoin([...calls]).subscribe((val: any[]) => {
-      let data: any = []
-      val.map((value) => {
-        data = [...data, ...value]
-      })
-      this.results = data;
+    if(this.datas.instrumentId == this.myForm.value.instrumentId){
+      // this.datas.resetSetData()
+      this.datas.totalTrades = 0;
+      this.resultData = [];
+      this.totalPoints = 0
+      this.totalTradeCost = 0;
+      this.realizedProfit= 0;
+      this.maxDrawDown=0;
+      this.continousdrawDown = 0
+      this.continousdrawDownTotal = 0
       this.setDatas();
-    })
 
+    }else{
+      let token = localStorage.getItem('token');
 
+      let calls: any = []
+      this.monthData.forEach((data, i) => {
+        let d = { token: token, fromDate: data.f, toDate: data.t, instrumentId: this.myForm.value.instrumentId }
+        calls.push(this.apiService.getEvery5MinsDataByInstrument(d).pipe(map((da: any) => da.data.candles)))
+  
+      })
+  
+  
+      forkJoin([...calls]).subscribe((val: any[]) => {
+        let data: any = []
+        val.map((value) => {
+          data = [...data, ...value]
+        })
+
+        // this.datas.lotsize = Math.round((this.datas.investedAmount / data[0][1]) * 3.5);
+        // this.myForm.get('lotSize')?.patchValue(this.datas.lotsize);
+
+        this.results = data;
+        this.datas.instrumentId = this.myForm.value.instrumentId;
+        this.setDatas();
+      })
+  
+    }
+
+    
+
+  }
+  calculateDrawdown(num: number){
+    console.log('hi')
+    if(num < this.maxDrawDown) this.maxDrawDown = num
+    return num
   }
 
 }
