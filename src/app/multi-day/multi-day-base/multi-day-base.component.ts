@@ -86,11 +86,10 @@ export class MultiDayBaseComponent implements OnInit {
     slOrderPlaced: false,
     slPriceToTrade: 0,
   };
-  trades: { side: string; exec: number; isLast?: boolean }[] = [];
+  trades: { side: string; exec: number; isLast?: boolean,date: Date }[] = [];
   totalPointsEarned: number = 0;
   constructor(private datas: DataService) {
     this.datas.selectedData.subscribe(({ datas, diff }) => {
-      debugger;
       if (datas.length) {
         this.buySellDiff = diff;
         this.mainFunction(datas);
@@ -160,11 +159,11 @@ export class MultiDayBaseComponent implements OnInit {
           this.MB.comments.push(
             `TimeEnd Sell EXEC at open price ${closePrice}`
           );
-          this.trades.push({ side: 'SELL', exec: closePrice, isLast: true });
+          this.trades.push({ side: 'SELL', exec: closePrice, isLast: true,date: new Date(data[0]) });
         } else if (this.sellSide.includes(this.MB.status)) {
           // Sell Side Open
           this.MB.comments.push(`TimeEnd Buy EXEC at open price ${closePrice}`);
-          this.trades.push({ side: 'BUY', exec: closePrice, isLast: true });
+          this.trades.push({ side: 'BUY', exec: closePrice, isLast: true,date: new Date(data[0]) });
         } else {
           this.MB.comments.push(
             `Cancell all the pending orders and close the trade`
@@ -209,6 +208,7 @@ export class MultiDayBaseComponent implements OnInit {
               side: 'BUY',
               exec: this.MB.priceToTrade,
               isLast: false,
+              date: new Date(data[0])
             });
 
             //new High
@@ -304,7 +304,7 @@ export class MultiDayBaseComponent implements OnInit {
             this.trades.push({
               side: 'BUY',
               exec: this.MB.priceToTrade,
-              isLast: false,
+              isLast: false,date: new Date(data[0])
             });
 
             return;
@@ -369,6 +369,7 @@ export class MultiDayBaseComponent implements OnInit {
               side: 'SELL',
               exec: this.MB.priceToTrade,
               isLast: false,
+              date: new Date(data[0])
             });
 
             //new low
@@ -461,6 +462,7 @@ export class MultiDayBaseComponent implements OnInit {
               side: 'SELL',
               exec: this.MB.priceToTrade,
               isLast: false,
+              date: new Date(data[0])
             });
 
             return;
@@ -786,6 +788,7 @@ export class MultiDayBaseComponent implements OnInit {
               side: 'SELL',
               exec: this.MB.priceToTrade,
               isLast: false,
+              date: new Date(data[0])
             });
             // low < old low
             if (data[Val.low] < this.MB.low) {
@@ -839,6 +842,8 @@ export class MultiDayBaseComponent implements OnInit {
               side: 'SELL',
               exec: this.MB.priceToTrade,
               isLast: false,
+              date: new Date(data[0])
+
             });
 
             // low < old low
@@ -894,6 +899,8 @@ export class MultiDayBaseComponent implements OnInit {
               side: 'SELL',
               exec: this.MB.priceToTrade,
               isLast: false,
+              date: new Date(data[0])
+
             });
 
             // low < old low
@@ -945,6 +952,8 @@ export class MultiDayBaseComponent implements OnInit {
               side: 'SELL',
               exec: this.MB.priceToTrade,
               isLast: false,
+              date: new Date(data[0])
+
             });
 
             // low < old low
@@ -998,6 +1007,8 @@ export class MultiDayBaseComponent implements OnInit {
               side: 'BUY',
               exec: this.MB.priceToTrade,
               isLast: false,
+              date: new Date(data[0])
+
             });
 
             // high > old high
@@ -1053,6 +1064,8 @@ export class MultiDayBaseComponent implements OnInit {
               side: 'BUY',
               exec: this.MB.priceToTrade,
               isLast: false,
+              date: new Date(data[0])
+
             });
 
             // high > old high
@@ -1107,6 +1120,8 @@ export class MultiDayBaseComponent implements OnInit {
               side: 'BUY',
               exec: this.MB.priceToTrade,
               isLast: false,
+              date: new Date(data[0])
+
             });
 
             // high > old high
@@ -1158,6 +1173,8 @@ export class MultiDayBaseComponent implements OnInit {
               side: 'BUY',
               exec: this.MB.priceToTrade,
               isLast: false,
+              date: new Date(data[0])
+
             });
 
             // high > old high
@@ -1369,6 +1386,7 @@ export class MultiDayBaseComponent implements OnInit {
   calculatePoints() {
     let points = { side: '', tradePrice: 0, pointsEarned: 0, isFirst: true };
     this.datas.totalTrades += this.trades.length;
+    // console.log(this.trades)
     this.trades.forEach((trade) => {
       if (trade.side == 'BUY') {
         if (points.isFirst) {
@@ -1410,6 +1428,7 @@ export class MultiDayBaseComponent implements OnInit {
       date: this.MB.date,
       ProfitAndLoss: this.customParseFloat(this.totalPointsEarned),
       noOfTrades: this.trades.length,
+      trades: this.trades
     });
     // alert(this.totalPointsEarned)
   }

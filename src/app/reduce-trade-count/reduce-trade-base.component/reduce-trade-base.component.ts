@@ -65,7 +65,7 @@ export class ReduceTradeBaseComponent implements OnInit {
     buySellDiff: number = 0;
     buySide: number[] = [6, 7, 10, 11, 12, 13]
     sellSide: number[] = [8, 9, 14, 15, 16, 17]
-    startTime: string = '09:15:00+0530';
+    startTime: string = '09:30:00+0530';
     endTime: string = '15:15:00+0530';
 
     tradeCount: number = 0;

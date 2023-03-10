@@ -19,7 +19,7 @@ export class MultiDayComponent implements OnInit {
   currentPage: number = 0;
 
   structureData: { [key: string]: any[] } = {};
-  resultData: { date: Date, ProfitAndLoss: number, noOfTrades: number, tradeCost: number, realizedProfits: number, demo: number }[] = [];
+  resultData: { date: Date, ProfitAndLoss: number, noOfTrades: number, tradeCost: number, realizedProfits: number, demo: number,trades: [] }[] = [];
   totalPoints: number = 0;
   totalTradeCost: number = 0;
   realizedProfit: number = 0
@@ -37,7 +37,6 @@ export class MultiDayComponent implements OnInit {
 
 
     this.datas.resultEachDay.subscribe((data) => {
-      console.log(data)
       this.totalPoints += data.ProfitAndLoss;
 
       data.tradeCost = data.noOfTrades * this.datas.pertTradeCost;
@@ -47,6 +46,8 @@ export class MultiDayComponent implements OnInit {
       data.demo = this.realizedProfit;
       // data.demo += data.realizedProfits
       this.resultData.push(data)
+      console.log(this.resultData)
+
     })
   }
   ngOnInit(): void {
@@ -70,7 +71,7 @@ export class MultiDayComponent implements OnInit {
       this.datas.setData({ datas: this.structureData[stru], diff: this.buySellDiff });
       // return
     }
-    console.log(this.structureData)
+    // console.log(this.structureData)
 
   }
 

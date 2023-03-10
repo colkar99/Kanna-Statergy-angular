@@ -69,11 +69,11 @@ export class TradeAutomationComponent implements OnInit {
   lastCandelTime: Date = new Date();
 
   //////////////////////////////////
-  buySellDiff: number = 5;
+  buySellDiff: number = 45;
   buySide: number[] = [6, 7, 10, 11, 12, 13]
   sellSide: number[] = [8, 9, 14, 15, 16, 17]
   endTime: string = '15:15:00+0530';
-  startTime: string = '09:15:00+0530';
+  startTime: string = '09:30:00+0530';
 
   MB: MartketData = {
     allHigh: 0, allLow: 0, high: 0, low: 0, open: 0, UB: 0, LB: 0, target: 0, stopLoss: 0, priceToTrade: 0, trades: [], status: Order.nill, isFirstTrade: true, comments: [], slOrderStatus: 1, slOrderPlaced: false, slPriceToTrade: 0
