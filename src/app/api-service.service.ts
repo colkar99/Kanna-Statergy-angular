@@ -12,8 +12,8 @@ export class ApiServiceService {
 
   constructor(public httpClient: HttpClient,) { }
 
-  getEvery5MinsData(date: string, token: string) {
-    return this.httpClient.post(`${this.hostUrl}${this.uri}`, { date, token })
+  getEvery5MinsData(date: string, token: string,isOwnData: boolean) {
+    return this.httpClient.post(`${this.hostUrl}${this.uri}`, { date, token,isOwnData })
   }
 
   getEvery5MinsDataByInstrument(data: any) {

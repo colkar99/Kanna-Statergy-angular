@@ -1,6 +1,19 @@
 <app-multi-day-base></app-multi-day-base>
 <div class="row">
   <div class="col-12">
+    <div class="col-4">
+      <h4>No of profits days: {{ calculateProfitAndLossDays.profits }} days</h4>
+    </div>
+    <div class="col-4">
+      <h4>No of Losses days: {{ calculateProfitAndLossDays.losses }} days</h4>
+    </div>
+    <div class="col-4">
+      <h4>
+        No of no trades days: {{ calculateProfitAndLossDays.noTrade }} days
+      </h4>
+    </div>
+  </div>
+  <div class="col-12">
     <table class="table">
       <thead>
         <tr>
@@ -13,54 +26,91 @@
           <th scope="col">Profit/Loss</th>
           <th scope="col">Realised Profit</th>
           <th scope="col">check</th>
-
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let result of resultData;let i = index">
-          <th scope="row">{{i + 1}}</th>
-          <td>{{result?.date | date}}</td>
-          <td>{{result?.noOfTrades}}</td>
-          <td>{{result?.tradeCost}}</td>
-          <td>{{result?.ProfitAndLoss}}</td>
-          <td>{{datas.lotsize}}</td>
+        <tr *ngFor="let result of resultData; let i = index">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ result?.date | date }}</td>
+          <td>{{ result?.noOfTrades }}</td>
+          <td>{{ result?.tradeCost }}</td>
+          <td>{{ result?.ProfitAndLoss }}</td>
+          <td>{{ datas.lotsize }}</td>
           <td>
-            <span *ngIf="customParseFloat(result.ProfitAndLoss * datas.lotsize) > 0" style="color: green;">
-              &#x20b9; {{customParseFloat(result.ProfitAndLoss * datas.lotsize)}}
+            <span
+              *ngIf="customParseFloat(result.ProfitAndLoss * datas.lotsize) > 0"
+              style="color: green"
+            >
+              &#x20b9;
+              {{ customParseFloat(result.ProfitAndLoss * datas.lotsize) }}
             </span>
-            <span *ngIf="customParseFloat(result.ProfitAndLoss * datas.lotsize) < 0" style="color: red;">
-              &#x20b9; {{customParseFloat(result.ProfitAndLoss * datas.lotsize)}}
+            <span
+              *ngIf="customParseFloat(result.ProfitAndLoss * datas.lotsize) < 0"
+              style="color: red"
+            >
+              &#x20b9;
+              {{ customParseFloat(result.ProfitAndLoss * datas.lotsize) }}
             </span>
           </td>
           <td>
-            <span *ngIf="customParseFloat((result.ProfitAndLoss * datas.lotsize) - result.tradeCost) > 0"
-              style="color: green;">
-              &#x20b9; {{customParseFloat((result.ProfitAndLoss * datas.lotsize) - result.tradeCost)}}
+            <span
+              *ngIf="
+                customParseFloat(
+                  result.ProfitAndLoss * datas.lotsize - result.tradeCost
+                ) > 0
+              "
+              style="color: green"
+            >
+              &#x20b9;
+              {{
+                customParseFloat(
+                  result.ProfitAndLoss * datas.lotsize - result.tradeCost
+                )
+              }}
             </span>
-            <span *ngIf="customParseFloat((result.ProfitAndLoss * datas.lotsize) - result.tradeCost) < 0"
-              style="color: red;">
-              &#x20b9; {{customParseFloat((result.ProfitAndLoss * datas.lotsize) - result.tradeCost)}}
+            <span
+              *ngIf="
+                customParseFloat(
+                  result.ProfitAndLoss * datas.lotsize - result.tradeCost
+                ) < 0
+              "
+              style="color: red"
+            >
+              &#x20b9;
+              {{
+                customParseFloat(
+                  result.ProfitAndLoss * datas.lotsize - result.tradeCost
+                )
+              }}
             </span>
           </td>
-          <td>{{result.demo}}</td>
-
+          <td>{{ result.demo }}</td>
         </tr>
         <tr>
-          <td>Total Trades:{{datas.totalTrades}} * {{datas.pertTradeCost}} </td>
-          <td>Trade cost:{{datas.totalTrades * datas.pertTradeCost}}</td>
+          <td>
+            Total Trades:{{ datas.totalTrades }} * {{ datas.pertTradeCost }}
+          </td>
+          <td>Trade cost:{{ datas.totalTrades * datas.pertTradeCost }}</td>
           <td></td>
           <td></td>
           <td>
             <h3>Total</h3>
           </td>
           <td>
-            <h3>{{customParseFloat(totalPoints * datas.lotsize)}}</h3>
+            <h3>{{ customParseFloat(totalPoints * datas.lotsize) }}</h3>
           </td>
           <td>
-            <h3>Realized Profit </h3>
+            <h3>Realized Profit</h3>
           </td>
           <td>
-            <h3>{{customParseFloat((totalPoints * datas.lotsize) - (datas.pertTradeCost * datas.totalTrades))}}</h3>
+            <h3>
+              {{
+                customParseFloat(
+                  totalPoints * datas.lotsize -
+                    datas.pertTradeCost * datas.totalTrades
+                )
+              }}
+            </h3>
           </td>
         </tr>
       </tbody>

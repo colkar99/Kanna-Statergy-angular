@@ -1,31 +1,54 @@
 <div class="row form-group">
   <div class="col-6">
     <label for="exampleInputEmail1" class="form-label">Select Date</label>
-    <input type="date" [ngModel]="today | date:'yyyy-MM-dd'" (ngModelChange)="today = $event;reload()" name="dt"
-      class="form-control form-control-rounded" #searchDate>
+    <input
+      type="date"
+      [ngModel]="today | date : 'yyyy-MM-dd'"
+      (ngModelChange)="today = $event; reload()"
+      name="dt"
+      class="form-control form-control-rounded"
+      #searchDate
+    />
   </div>
   <div class="col-6">
     <label for="exampleInputEmail1" class="form-label">Token</label>
-    <input type="text" [(ngModel)]="token" (change)="setToken('set')" name="token"
-      class="form-control form-control-rounded" #searchDate>
-    <button type="button" class="btn btn-success" (click)="setToken('set')">Save Token</button>
-    <button type="button" class="btn btn-danger" (click)="setToken('delete')">Delete Token</button>
-
+    <input
+      type="text"
+      [(ngModel)]="token"
+      (change)="setToken('set')"
+      name="token"
+      class="form-control form-control-rounded"
+      #searchDate
+    />
+    <button type="button" class="btn btn-success" (click)="setToken('set')">
+      Save Token
+    </button>
+    <button type="button" class="btn btn-danger" (click)="setToken('delete')">
+      Delete Token
+    </button>
+  </div>
+  <div class="col-12">
+    <label>From Own Data</label>
+    <input
+      type="checkbox"
+      [(ngModel)]="isOwnData"
+      (change)="setToken('set')"
+      name="isOwnData"
+    />
   </div>
   <div class="col-12">
     <h3>Last Candle Update</h3>
-        {{lastCandelTime}}
-
+    {{ lastCandelTime }}
   </div>
 </div>
-
 
 <div class="row">
   <H2>Points Earned</H2>
   <div class="col-12">
     <h3>
-      {{customParseFloat(totalPointsEarned)}} * {{dataService.lotsize}} ={{customParseFloat(totalPointsEarned *
-      dataService.lotsize)}}
+      {{ customParseFloat(totalPointsEarned) }} * {{ dataService.lotsize }} ={{
+        customParseFloat(totalPointsEarned * dataService.lotsize)
+      }}
     </h3>
   </div>
 </div>
@@ -34,82 +57,87 @@
     <div class="row">
       <div class="col-4">
         <h2>Date</h2>
-        <label>{{MB.date | date}}</label>
+        <label>{{ MB.date | date }}</label>
       </div>
       <div class="col-4">
         <h2>Open</h2>
-        <label>{{MB.open}}</label>
+        <label>{{ MB.open }}</label>
       </div>
       <div class="col-4">
         <h2>High</h2>
-        <label>{{MB.high}}</label>
+        <label>{{ MB.high }}</label>
       </div>
       <div class="col-4">
         <h2>Low</h2>
-        <label>{{MB.low}}</label>
+        <label>{{ MB.low }}</label>
       </div>
       <div class="col-4">
         <h2>UB</h2>
-        <label>{{MB.UB}}</label>
+        <label>{{ MB.UB }}</label>
       </div>
       <div class="col-4">
         <h2>LB</h2>
-        <label>{{MB.LB}}</label>
+        <label>{{ MB.LB }}</label>
       </div>
       <div class="col-4">
         <h2>Status</h2>
-        <label>{{getStatus(MB.status)}}</label>
+        <label>{{ getStatus(MB.status) }}</label>
       </div>
       <div class="col-4">
         <h2>Target</h2>
-        <label>{{MB.target.toFixed(2)}}</label>
+        <label>{{ MB.target.toFixed(2) }}</label>
       </div>
       <div class="col-4">
         <h2>Stoploss</h2>
-        <label>{{MB.stopLoss}}</label>
+        <label>{{ MB.stopLoss }}</label>
       </div>
       <div class="col-4">
         <h2>Trade Price</h2>
-        <label>{{MB.priceToTrade}}</label>
+        <label>{{ MB.priceToTrade }}</label>
       </div>
       <div class="col-4">
         <h2>Is first Trade</h2>
-        <label>{{MB.isFirstTrade}}</label>
+        <label>{{ MB.isFirstTrade }}</label>
       </div>
       <div class="col-4">
         <h2>SL Order status</h2>
-        <label>{{getStatus(MB.slOrderStatus)}}</label>
+        <label>{{ getStatus(MB.slOrderStatus) }}</label>
       </div>
       <div class="col-4">
         <h2>SL order placed</h2>
-        <label>{{MB.slOrderPlaced}}</label>
+        <label>{{ MB.slOrderPlaced }}</label>
       </div>
       <div class="col-4">
         <h2>SL order price</h2>
-        <label>{{MB.slPriceToTrade}}</label>
+        <label>{{ MB.slPriceToTrade }}</label>
       </div>
     </div>
   </div>
   <div class="col-6">
     <ul class="list-group p-0">
-
-      <li class="list-group-item p-0" *ngFor="let comment of MB.comments"
-        [ngClass]="{'my_class': getExecPresent(comment) === true}">
-        <div *ngIf="getExecPresent(comment)" class="alert alert-success p-1 m-0" role="alert">
-          {{comment}}
-
+      <li
+        class="list-group-item p-0"
+        *ngFor="let comment of MB.comments"
+        [ngClass]="{ my_class: getExecPresent(comment) === true }"
+      >
+        <div
+          *ngIf="getExecPresent(comment)"
+          class="alert alert-success p-1 m-0"
+          role="alert"
+        >
+          {{ comment }}
         </div>
-        <div *ngIf="!getExecPresent(comment)" class="alert alert-light p-1 m-0" role="alert">
-          {{comment}}
-
+        <div
+          *ngIf="!getExecPresent(comment)"
+          class="alert alert-light p-1 m-0"
+          role="alert"
+        >
+          {{ comment }}
         </div>
       </li>
     </ul>
   </div>
- 
 </div>
 <div class="row">
-  <div class="col-12">
-
-  </div>
+  <div class="col-12"></div>
 </div>
