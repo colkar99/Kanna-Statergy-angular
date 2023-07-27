@@ -90,13 +90,13 @@
                         <span
                             *ngIf="customParseFloat((result.ProfitAndLoss * myForm.value.lotSize) - result.tradeCost) > 0"
                             style="color: green;">
-                            &#x20b9; {{customParseFloat((result.ProfitAndLoss * myForm.value.lotSize) -
+                            {{customParseFloat((result.ProfitAndLoss * myForm.value.lotSize) -
                             result.tradeCost)}}
                         </span>
                         <span
                             *ngIf="customParseFloat((result.ProfitAndLoss * myForm.value.lotSize) - result.tradeCost) < 0"
                             style="color: red;">
-                            &#x20b9; {{customParseFloat((result.ProfitAndLoss * myForm.value.lotSize) -
+                             {{customParseFloat((result.ProfitAndLoss * myForm.value.lotSize) -
                             result.tradeCost)}}
                         </span>
                     </td>

@@ -7,8 +7,8 @@ import { environment } from '../environments/environment'
 })
 export class ApiServiceService {
   hostUrl: string = environment.url;
-  uri: string = '/getCandles';
-  uri2: string = '/instrument/id';
+  uri: string = 'test/getCandles';
+  uri2: string = 'test/instrument/id';
 
   constructor(public httpClient: HttpClient,) { }
 
@@ -17,6 +17,8 @@ export class ApiServiceService {
   }
 
   getEvery5MinsDataByInstrument(data: any) {
+    debugger
+
     return this.httpClient.post(`${this.hostUrl}${this.uri2}`, { data })
   }
 }

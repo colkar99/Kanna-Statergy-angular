@@ -61,11 +61,11 @@ enum Order {
 })
 export class ReduceTradeBaseComponent implements OnInit {
   //Trade limit with 3 and and 9.25 gives constant
-  tradeLimit: number = 3;
+  tradeLimit: number = 4;
   buySellDiff: number = 0;
   buySide: number[] = [6, 7, 10, 11, 12, 13];
   sellSide: number[] = [8, 9, 14, 15, 16, 17];
-  startTime: string = '09:30:00+0530';
+  startTime: string = '09:25:00+0530';
   endTime: string = '15:15:00+0530';
 
   tradeCount: number = 0;

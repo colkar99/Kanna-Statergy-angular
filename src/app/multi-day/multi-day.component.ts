@@ -36,6 +36,7 @@ export class MultiDayComponent implements OnInit {
     noTrade: number;
   } = { profits: 0, losses: 0, noTrade: 0 };
 
+  maxLossPerDay: number = 0;
   // resetData(){
   //   this.structureData = {}
   //   this.resultData = []
@@ -77,13 +78,17 @@ export class MultiDayComponent implements OnInit {
       // data.demo += data.realizedProfits
       this.resultData.push(data);
       // console.log(this.resultData)
-
+      if(+data.realizedProfits < +this.maxLossPerDay ){
+        this.maxLossPerDay = data.realizedProfits;
+      }
       console.log(data);
       if (data.realizedProfits > 0) this.calculateProfitAndLossDays.profits++;
       else if (data.realizedProfits < 0)
         this.calculateProfitAndLossDays.losses++;
       else if (data.realizedProfits == 0)
         this.calculateProfitAndLossDays.noTrade++;
+      
+        
     });
   }
   ngOnInit(): void {
