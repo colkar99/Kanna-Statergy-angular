@@ -11,7 +11,8 @@ import { MultiDayBaseComponent } from './multi-day/multi-day-base/multi-day-base
 import { ReduceTradeCountComponent } from './reduce-trade-count/reduce-trade-count.component';
 import { ReduceTradeBaseComponent } from './reduce-trade-count/reduce-trade-base.component/reduce-trade-base.component';
 import { YearlyCheckBaseComponent } from './yearly-check-base/yearly-check-base.component';
-import { YearlyCheckMainComponent } from './yearly-check-base/yearly-check-main/yearly-check-main.component'
+import { YearlyCheckMainComponent } from './yearly-check-base/yearly-check-main/yearly-check-main.component';
+import { KiteSuccessLoginPageComponent } from './kite-success-login-page/kite-success-login-page.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,7 +22,8 @@ import { YearlyCheckMainComponent } from './yearly-check-base/yearly-check-main/
     ReduceTradeCountComponent,
     ReduceTradeBaseComponent,
     YearlyCheckBaseComponent,
-    YearlyCheckMainComponent
+    YearlyCheckMainComponent,
+    KiteSuccessLoginPageComponent
   ],
   imports: [
     BrowserModule,

@@ -9,6 +9,8 @@ export class ApiServiceService {
   hostUrl: string = environment.url;
   uri: string = 'test/getCandles';
   uri2: string = 'test/instrument/id';
+  kite_request_token: string = 'kite/set_token';
+
 
   constructor(public httpClient: HttpClient,) { }
 
@@ -20,5 +22,9 @@ export class ApiServiceService {
     debugger
 
     return this.httpClient.post(`${this.hostUrl}${this.uri2}`, { data })
+  }
+
+  setRequestToken(data: any){
+    return this.httpClient.post(`${this.hostUrl}${this.kite_request_token}`, { data });
   }
 }

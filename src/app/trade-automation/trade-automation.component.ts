@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiServiceService } from '../api-service.service';
 import { DataService } from '../data.service';
+import { environment } from 'src/environments/environment';
 
 interface MartketData {
   date?: Date;
@@ -67,6 +68,7 @@ export class TradeAutomationComponent implements OnInit {
   token: string = '';
   lastCandelTime: Date = new Date();
   isOwnData: boolean = false;
+  kiteLoginUrl: string = environment.kiteLoginUrl;
 
   //////////////////////////////////
   buySellDiff: number = 45;
@@ -131,7 +133,6 @@ export class TradeAutomationComponent implements OnInit {
   }
 
   reload() {
-    debugger;
     this.today = new Date(this.today);
     let token = localStorage.getItem('token');
     if (token) {

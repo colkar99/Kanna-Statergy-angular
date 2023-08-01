@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  url: 'http://localhost:3000/api/v1/'
+  url: 'http://localhost:3000/api/v1/',
+  kiteLoginUrl: 'https://kite.zerodha.com/connect/login?v=3&api_key=86jqhio0mw5zesam'
+
 };
 
 /*
