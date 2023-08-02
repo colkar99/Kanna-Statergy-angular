@@ -108,6 +108,7 @@ export class MultiDayComponent implements OnInit {
       }
       this.structureData[date].push(data);
     });
+    debugger
     for (let stru in this.structureData) {
       this.datas.setData({
         datas: this.structureData[stru],
