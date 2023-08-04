@@ -71,7 +71,7 @@ export class TradeAutomationComponent implements OnInit {
   kiteLoginUrl: string = environment.kiteLoginUrl;
 
   //////////////////////////////////
-  buySellDiff: number = 45;
+  buySellDiff: number = 2;
   buySide: number[] = [6, 7, 10, 11, 12, 13];
   sellSide: number[] = [8, 9, 14, 15, 16, 17];
   endTime: string = '15:15:00+0530';
