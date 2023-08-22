@@ -71,7 +71,7 @@ export class TradeAutomationComponent implements OnInit {
   kiteLoginUrl: string = environment.kiteLoginUrl;
 
   //////////////////////////////////
-  buySellDiff: number = 2;
+  buySellDiff: number = 1
   buySide: number[] = [6, 7, 10, 11, 12, 13];
   sellSide: number[] = [8, 9, 14, 15, 16, 17];
   endTime: string = '15:15:00+0530';
@@ -259,6 +259,7 @@ export class TradeAutomationComponent implements OnInit {
         case 2: {
           //Normal Buy placed
           //check  high crossed trade price
+
           if (data[Val.high] >= this.MB.priceToTrade) {
             //exec Order
             this.MB.isFirstTrade = false;
@@ -308,9 +309,9 @@ export class TradeAutomationComponent implements OnInit {
             } else {
               this.MB.status = Order.pendingSellTarget;
               this.MB.priceToTrade = data[Val.low] - this.buySellDiff;
-              this.setTargetFunction('BUY');
+              this.setTargetFunction('SELL');
               this.MB.comments.push(
-                `LB TGT SELL Order Placed at${this.MB.priceToTrade.toFixed(
+                `LB TGT SELL Order Placed at ${this.MB.priceToTrade.toFixed(
                   2
                 )} TGT:${this.MB.target.toFixed(2)} , SL:${
                   this.MB.stopLoss
@@ -347,6 +348,18 @@ export class TradeAutomationComponent implements OnInit {
             //set new low
             //set upper and lower band
           }
+          // if(data[Val.high] > this.MB.high){
+          //   this.MB.allHigh = data[Val.high]
+          //   this.MB.high = data[Val.high]
+          //   this.MB.comments.push(
+          //     `New High  ${this.MB.high.toFixed(
+          //       2
+          //     )} ${this.getTimeForComment(data)}`
+          //   );
+          //   this.setUpperBandAndLowerBand(data);
+
+
+          // }
           //check  Low less than LB
           //cancel Buy Order
           //check new low
@@ -416,6 +429,18 @@ export class TradeAutomationComponent implements OnInit {
             }
             //check new Low
           }
+
+          // if(data[Val.high] > this.MB.high){
+          //   this.MB.allHigh = data[Val.high]
+          //   this.MB.high = data[Val.high]
+          //   this.MB.comments.push(
+          //     `New High  ${this.MB.high.toFixed(
+          //       2
+          //     )} ${this.getTimeForComment(data)}`
+          //   );
+          //   this.setUpperBandAndLowerBand(data);
+
+          // }
 
           break;
         }
@@ -510,6 +535,17 @@ export class TradeAutomationComponent implements OnInit {
             this.MB.allHigh = data[Val.high];
             this.setUpperBandAndLowerBand(data);
           }
+
+          // if(data[Val.low] < this.MB.low){
+          //   this.MB.allLow = data[Val.low]
+          //   this.MB.low = data[Val.low]
+          //   this.MB.comments.push(
+          //     `New Low  ${this.MB.low.toFixed(
+          //       2
+          //     )} ${this.getTimeForComment(data)}`
+          //   );
+          //   this.setUpperBandAndLowerBand(data);
+          // }
           //cancel Buy Order
           //check new low
           break;
@@ -578,6 +614,17 @@ export class TradeAutomationComponent implements OnInit {
             }
             //check new Low
           }
+          
+          // if(data[Val.low] < this.MB.low){
+          //   this.MB.allLow = data[Val.low]
+          //   this.MB.low = data[Val.low]
+          //   this.MB.comments.push(
+          //     `New Low  ${this.MB.low.toFixed(
+          //       2
+          //     )} ${this.getTimeForComment(data)}`
+          //   );
+          //   this.setUpperBandAndLowerBand(data);
+          // }
           break;
         }
         case 6: {

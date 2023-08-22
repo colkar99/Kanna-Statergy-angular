@@ -273,7 +273,7 @@ export class ReduceTradeBaseComponent implements OnInit {
             } else {
               this.MB.status = Order.pendingSellTarget;
               this.MB.priceToTrade = data[Val.low] - this.buySellDiff;
-              this.setTargetFunction('BUY');
+              this.setTargetFunction('SELL');
               this.MB.comments.push(
                 `LB TGT SELL Order Placed at${
                   data[Val.low] - this.buySellDiff

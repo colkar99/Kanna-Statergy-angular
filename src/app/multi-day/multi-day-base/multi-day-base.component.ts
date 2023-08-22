@@ -211,6 +211,7 @@ export class MultiDayBaseComponent implements OnInit {
           break;
         }
         case 2: {
+
           //Normal Buy placed
           //check  high crossed trade price
           if (data[Val.high] >= this.MB.priceToTrade) {
@@ -265,7 +266,7 @@ export class MultiDayBaseComponent implements OnInit {
             } else {
               this.MB.status = Order.pendingSellTarget;
               this.MB.priceToTrade = data[Val.low] - this.buySellDiff;
-              this.setTargetFunction('BUY');
+              this.setTargetFunction('SELL');
               this.MB.comments.push(
                 `LB TGT SELL Order Placed at${
                   data[Val.low] - this.buySellDiff
@@ -304,12 +305,15 @@ export class MultiDayBaseComponent implements OnInit {
             //set new low
             //set upper and lower band
           }
+
+          
           //check  Low less than LB
           //cancel Buy Order
           //check new low
           break;
         }
         case 3: {
+
           // Target Buy Order placed
           //High >= priceTo Trade
           if (data[Val.high] >= this.MB.priceToTrade) {
@@ -371,10 +375,12 @@ export class MultiDayBaseComponent implements OnInit {
             }
             //check new Low
           }
+       
 
           break;
         }
         case 4: {
+
           //Normal sell placed
           //check  low crossed trade price
           if (data[Val.low] <= this.MB.priceToTrade) {
@@ -467,6 +473,7 @@ export class MultiDayBaseComponent implements OnInit {
           }
           //cancel Buy Order
           //check new low
+         
           break;
         }
         case 5: {
